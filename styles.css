@@ -1,0 +1,16 @@
+html {
+    min-height: 100%;
+}
+
+body  {
+    min-height: 100vh;
+}
+
+body > div {
+    min-height: 100vh;
+}
+
+html, body, div, p, img, picture, figure {
+    margin: 0;
+    padding: 0;
+}

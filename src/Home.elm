@@ -21,6 +21,7 @@ import Css exposing
     )
 import Html.Styled exposing (Html, div, text, p, toUnstyled)
 import Html.Styled.Attributes exposing (css)
+import VirtualDom exposing (Node)
 
 home : Html msg
 home = div
@@ -88,4 +89,5 @@ footer = div
         ]
     ]
 
+view : Node msg
 view = toUnstyled home

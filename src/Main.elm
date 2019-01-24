@@ -1,3 +1,8 @@
-import Html exposing (text)
+module Main exposing (main)
 
-main = text "Hello, world!"
+import Html
+
+import Home exposing (view)
+
+main : Html.Html msg
+main = view

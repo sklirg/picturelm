@@ -18,15 +18,17 @@ import Css exposing
     , displayFlex
     , vw
     , auto
+    , pct
     )
+import Gallery.View exposing (galleryListView)
 import Html.Styled exposing (Html, div, text, p, toUnstyled)
 import Html.Styled.Attributes exposing (css)
 import VirtualDom exposing (Node)
 
 import Model exposing (AppModel)
 
-home : Html msg
-home = div
+home : AppModel -> Html msg
+home model = div
     [ css
         [ property "display" "grid"
         , property "grid-template-rows" "5rem auto 5rem"
@@ -34,7 +36,7 @@ home = div
         ]
     ]
     [ header
-    , body
+    , body model
     , footer
     ]
 
@@ -57,14 +59,15 @@ header = div
         ]
     ]
 
-body : Html msg
-body = div
+body : AppModel -> Html msg
+body model = div
     [ css
         [ margin2 (rem 2) auto
         , maxWidth (rem 60)
+        , width (pct 100)
         ]
     ]
-    [ text "body" ]
+    [ galleryListView model.galleries ]
 
 footer : Html msg
 footer = div
@@ -92,4 +95,4 @@ footer = div
     ]
 
 view : AppModel -> Node msg
-view _ = toUnstyled home
+view model = toUnstyled (home model)

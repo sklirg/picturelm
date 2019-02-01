@@ -50,8 +50,9 @@ galleryListView : List Gallery -> Html msg
 galleryListView galleries = div
     [ css
         [ property "display" "grid"
-        , property "grid-template-columns" "repeat(5, 1fr)"
+        , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 1fr))"
         , property "grid-gap" "1rem"
+        , property "justify-items" "center"
         , marginLeft (rem 1)
         , marginRight (rem 1)
         ]

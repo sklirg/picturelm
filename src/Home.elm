@@ -19,12 +19,21 @@ import Css exposing
     , auto
     , pct
     )
-import Gallery.View exposing (galleryListView)
-import Html.Styled exposing (Html, div, text, p, toUnstyled)
-import Html.Styled.Attributes exposing (css)
+import Gallery.View exposing (galleryListView, imageListView)
+import Html.Styled exposing (Html, a, div, text, p, toUnstyled)
+import Html.Styled.Attributes exposing (css, href)
+import Navigation exposing (Route(..))
 import VirtualDom exposing (Node)
 
 import Model exposing (AppModel)
+
+
+router : AppModel -> Html msg
+router model = case model.route of
+    Home -> galleryListView model.galleries
+    Gallery _ -> imageListView []
+    Image _ -> div [] [ text "Image" ]
+
 
 home : AppModel -> Html msg
 home model = div
@@ -52,8 +61,8 @@ header = div
             , displayFlex
             ]
         ]
-        [ p
-            []
+        [ a
+            [ css [ color (hex "fff") ], href "/" ]
             [ text "Picturelm" ]
         ]
     ]
@@ -65,7 +74,8 @@ body model = div
         , width (pct 100)
         ]
     ]
-    [ galleryListView model.galleries ]
+    [ router model
+    ]
 
 footer : Html msg
 footer = div

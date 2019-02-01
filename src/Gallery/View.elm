@@ -1,4 +1,4 @@
-module Gallery.View exposing (galleryListView, galleryView)
+module Gallery.View exposing (galleryListView, imageListView)
 
 import Css exposing
     ( backgroundColor
@@ -13,12 +13,26 @@ import Css exposing
     , textDecoration
     , width
     )
-import Gallery.Model exposing (Gallery)
+import Gallery.Model exposing (Gallery, Image)
 import Html.Styled exposing (Html, a, div, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
+import Navigation exposing (Route(..), routeToUrl)
 
-image : String -> Html msg
-image imageUrl = img [ src imageUrl ] []
+imageView : Image -> Html msg
+imageView image = img [ src image.url ] []
+
+imageListView : List Image -> Html msg
+imageListView images = div
+    [ css
+        [ property "display" "grid"
+        , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 1fr))"
+        , property "grid-gap" "1rem"
+        , property "justify-items" "center"
+        , marginLeft (rem 1)
+        , marginRight (rem 1)
+        ]
+    ]
+    (List.map imageView images)
 
 galleryView : Gallery -> Html msg
 galleryView gallery = div []
@@ -33,14 +47,15 @@ galleryView gallery = div []
                 ]
                 [ text gallery.title ] ]
         , a
-            [ href gallery.url ]
+            [ href (routeToUrl (Navigation.Gallery gallery.id))
+            ]
             [ img
                 [ css
                     [ backgroundColor (hex "ddd")
                     , width (rem 12.5)
                     , height (rem 12.5)
                     ]
-                , src gallery.url ]
+                , src gallery.thumbnail ]
                 []
             ]
         ]

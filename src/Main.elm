@@ -1,13 +1,14 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Home exposing (view)
 import Model exposing (AppModel, baseModel)
-import Msg exposing (AppMsg)
+import Msg exposing (AppMsg(..))
+import Navigation exposing (Route(..))
 import Update exposing (update)
 
 
-main : Program AppModel AppModel AppMsg
+main : Program String AppModel AppMsg
 main =
     Browser.element
         { init = baseModel
@@ -19,4 +20,10 @@ main =
 
 subscriptions : AppModel -> Sub AppMsg
 subscriptions _ =
-    Sub.none
+    onUrlChange UrlChanged
+
+
+-- Navigation
+
+port onUrlChange : (String -> msg) -> Sub msg
+

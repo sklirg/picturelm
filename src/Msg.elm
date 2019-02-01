@@ -1,5 +1,4 @@
-module Msg exposing (AppMsg)
-
+module Msg exposing (AppMsg(..))
 
 type AppMsg
-    = Nothing
+    = UrlChanged(String)

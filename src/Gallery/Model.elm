@@ -4,6 +4,7 @@ type alias Gallery =
     { title: String
     , thumbnail: String
     , url: String
+    , id: String
     , images: List Image
     }
 

@@ -9,7 +9,6 @@ import Css exposing
     , hex
     , color
     , margin2
-    , maxWidth
     , width
     , marginTop
     , marginBottom
@@ -63,7 +62,6 @@ body : AppModel -> Html msg
 body model = div
     [ css
         [ margin2 (rem 2) auto
-        , maxWidth (rem 60)
         , width (pct 100)
         ]
     ]

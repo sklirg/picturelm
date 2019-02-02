@@ -28,14 +28,14 @@ import VirtualDom exposing (Node)
 import Model exposing (AppModel)
 
 
-router : AppModel -> Html msg
+-- router : AppModel -> Html msg
 router model = case model.route of
     Home -> galleryListView model.galleries
     Gallery _ -> imageListView []
     Image _ -> div [] [ text "Image" ]
 
 
-home : AppModel -> Html msg
+-- home : AppModel -> Html msg
 home model = div
     [ css
         [ property "display" "grid"
@@ -67,7 +67,7 @@ header = div
         ]
     ]
 
-body : AppModel -> Html msg
+-- body : AppModel -> Html msg
 body model = div
     [ css
         [ margin2 (rem 2) auto
@@ -102,5 +102,5 @@ footer = div
         ]
     ]
 
-view : AppModel -> Node msg
+-- view : AppModel -> Node msg
 view model = toUnstyled (home model)

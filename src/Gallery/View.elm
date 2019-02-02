@@ -14,8 +14,10 @@ import Css exposing
     , width
     )
 import Gallery.Model exposing (Gallery, Image)
-import Html.Styled exposing (Html, a, div, img, p, text)
+import Html.Styled exposing (Html, a, button, div, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
+import Html.Styled.Events exposing (onClick)
+import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), routeToUrl)
 
 imageView : Image -> Html msg
@@ -34,7 +36,7 @@ imageListView images = div
     ]
     (List.map imageView images)
 
-galleryView : Gallery -> Html msg
+-- galleryView : Gallery -> Html AppMsg
 galleryView gallery = div []
     [ div
         []
@@ -47,7 +49,7 @@ galleryView gallery = div []
                 ]
                 [ text gallery.title ] ]
         , a
-            [ href (routeToUrl (Navigation.Gallery gallery.id))
+            [ onClick (ChangeRoute (Navigation.Gallery gallery.id))
             ]
             [ img
                 [ css
@@ -61,7 +63,7 @@ galleryView gallery = div []
         ]
     ]
 
-galleryListView : List Gallery -> Html msg
+-- galleryListView : List Gallery -> Html msg
 galleryListView galleries = div
     [ css
         [ property "display" "grid"

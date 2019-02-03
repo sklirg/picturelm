@@ -6,6 +6,7 @@
     "elm-version": "0.19.0",
     "dependencies": {
         "direct": {
+            "dillonkearns/elm-graphql": "4.2.0",
             "elm/browser": "1.0.1",
             "elm/core": "1.0.2",
             "elm/html": "1.0.0",
@@ -16,7 +17,13 @@
         },
         "indirect": {
             "Skinney/murmur3": "2.0.8",
+            "elm/bytes": "1.0.7",
+            "elm/file": "1.0.3",
+            "elm/http": "2.0.0",
+            "elm/regex": "1.0.0",
             "elm/time": "1.0.0",
+            "elm-community/list-extra": "8.1.0",
+            "lukewestby/elm-string-interpolate": "1.0.3",
             "rtfeldman/elm-hex": "1.0.0"
         }
     },

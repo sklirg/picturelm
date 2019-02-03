@@ -9,10 +9,12 @@
     "parcel-bundler": "^1.11.0"
   },
   "devDependencies": {
+    "@dillonkearns/elm-graphql": "^3.2.0",
     "elm-hot": "^1.0.1",
     "node-elm-compiler": "^5.0.1"
   },
   "scripts": {
+    "api": "elm-graphql http://localhost:8000/graphql --base Gallery --output src/API",
     "start": "parcel index.html"
   }
 }

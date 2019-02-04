@@ -29,8 +29,8 @@ testGallery : Gallery
 testGallery =
     { title = "Gallery 1"
     , id = Id "abcd"
+    , thumbnail = "https://picsum.photos/200?r"
     }
 
     -- , url = "/gallery/gallery-1"
-    -- , thumbnail = "https://picsum.photos/200?r"
     -- , images = []

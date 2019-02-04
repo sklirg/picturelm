@@ -102,8 +102,8 @@ apiGallery =
     SelectionSet.succeed Model.Gallery
         |> with Gallery.Object.GalleryNode.id
         |> with Gallery.Object.GalleryNode.title
+        |> with Gallery.Object.GalleryNode.thumbnail
         -- |> (with Gallery.Object.GalleryNode.description |> (SelectionSet.map (Maybe.withDefault "")))
-        -- |> with Gallery.Object.GalleryNode.thumbnail
 
 
 -- apiGalleryNode : SelectionSet Gallery.Object.GalleryNode GalleryNodeEdge

@@ -1,9 +1,11 @@
 module Gallery.Model exposing (Gallery, Image)
 
+import Gallery.Scalar exposing (Id(..))
+
 type alias Gallery =
-    { id: String
+    { id: Id
     , title: String
-    , description: String
+    -- , description: String
     -- , thumbnail: String
     -- , url: String
     -- , images: List Image

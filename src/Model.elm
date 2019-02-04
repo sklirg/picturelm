@@ -3,6 +3,7 @@ module Model exposing (AppModel, baseModel)
 import Gallery.Model exposing (Gallery)
 import Msg exposing (AppMsg)
 import Navigation exposing (Route(..), locationHrefToRoute)
+import Gallery.Scalar exposing (Id(..))
 
 
 baseModel : String -> ( AppModel, Cmd AppMsg )
@@ -27,8 +28,9 @@ type alias AppModel =
 testGallery : Gallery
 testGallery =
     { title = "Gallery 1"
-    -- , url = "/gallery/gallery-1"
-    , id = "abcd"
-    , thumbnail = "https://picsum.photos/200?r"
-    -- , images = []
+    , id = Id "abcd"
     }
+
+    -- , url = "/gallery/gallery-1"
+    -- , thumbnail = "https://picsum.photos/200?r"
+    -- , images = []

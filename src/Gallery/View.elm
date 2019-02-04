@@ -57,11 +57,11 @@ galleryView gallery = div []
                 [ css [ color (hex "000")
                 , textDecoration none
                 ]
-                , href gallery.id
+                , href gallery.title
                 ]
                 [ text gallery.title ] ]
         , a
-            [ onClick (ChangeRoute (Navigation.Gallery gallery.id))
+            [ onClick (ChangeRoute (Navigation.Gallery gallery.title))
             ]
             [ img
                 [ css
@@ -97,12 +97,12 @@ galleryListView galleries = div
 --         (GalleryNode.title)
 -- import Gallery.Query exposing (AllGalleriesOptionalArguments)
 
-apiGallery : SelectionSet APIGallery Gallery.Object.GalleryNode
+apiGallery : SelectionSet Gallery Gallery.Object.GalleryNode
 apiGallery =
-    SelectionSet.succeed APIGallery
-        -- |> with Gallery.Object.GalleryNode.id
+    SelectionSet.succeed Model.Gallery
+        |> with Gallery.Object.GalleryNode.id
         |> with Gallery.Object.GalleryNode.title
-        -- |> with Gallery.Object.GalleryNode.description
+        -- |> (with Gallery.Object.GalleryNode.description |> (SelectionSet.map (Maybe.withDefault "")))
         -- |> with Gallery.Object.GalleryNode.thumbnail
 
 

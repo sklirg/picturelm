@@ -1,11 +1,12 @@
 module Gallery.Model exposing (Gallery, Image)
 
 type alias Gallery =
-    { title: String
-    , thumbnail: String
-    , url: String
-    , id: String
-    , images: List Image
+    { id: String
+    , title: String
+    , description: String
+    -- , thumbnail: String
+    -- , url: String
+    -- , images: List Image
     }
 
 type alias Image =

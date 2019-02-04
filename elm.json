@@ -1,7 +1,8 @@
 {
     "type": "application",
     "source-directories": [
-        "src"
+        "src",
+        "src/API"
     ],
     "elm-version": "0.19.0",
     "dependencies": {
@@ -13,6 +14,7 @@
             "elm/json": "1.1.2",
             "elm/url": "1.0.0",
             "elm/virtual-dom": "1.0.2",
+            "krisajenkins/remotedata": "6.0.1",
             "rtfeldman/elm-css": "16.0.0"
         },
         "indirect": {

@@ -4,6 +4,7 @@ import Debug
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), locationHrefToRoute, pushUrl, routeToUrl)
+import Gallery.View exposing (makeRequest)
 
 update : AppMsg -> AppModel -> ( AppModel, Cmd AppMsg )
 update msg model =
@@ -20,3 +21,7 @@ update msg model =
                 url = routeToUrl route
             in
                 ( model, pushUrl url )
+        FetchGalleries ->
+            ( model, makeRequest )
+        ReceiveGalleries response ->
+            ( model, Cmd.none )

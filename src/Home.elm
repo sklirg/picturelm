@@ -20,8 +20,10 @@ import Css exposing
     , pct
     )
 import Gallery.View exposing (galleryListView, imageListView)
-import Html.Styled exposing (Html, a, div, text, p, toUnstyled)
+import Html.Styled exposing (Html, a, button, div, text, p, toUnstyled)
 import Html.Styled.Attributes exposing (css, href)
+import Html.Styled.Events exposing (onClick)
+import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..))
 import VirtualDom exposing (Node)
 
@@ -31,7 +33,7 @@ import Model exposing (AppModel)
 -- router : AppModel -> Html msg
 router model = case model.route of
     Home -> galleryListView model.galleries
-    Gallery _ -> imageListView []
+    Gallery _ -> div [] [ text "imagesss"] --imageListView []
     Image _ -> div [] [ text "Image" ]
 
 
@@ -75,6 +77,7 @@ body model = div
         ]
     ]
     [ router model
+    , button [ onClick FetchGalleries ] [ text "Fetch galleries" ]
     ]
 
 footer : Html msg

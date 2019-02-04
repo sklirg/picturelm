@@ -27,8 +27,8 @@ type alias AppModel =
 testGallery : Gallery
 testGallery =
     { title = "Gallery 1"
-    , url = "/gallery/gallery-1"
+    -- , url = "/gallery/gallery-1"
     , id = "abcd"
     , thumbnail = "https://picsum.photos/200?r"
-    , images = []
+    -- , images = []
     }

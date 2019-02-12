@@ -28,16 +28,12 @@ update msg model =
             RemoteData.Success data ->
                 let
                     galleries = model.galleries
-                    newGalleries = data.gallery
+                    newGalleries = data.galleries
                 in 
-                    ( { model | galleries = newGalleries :: galleries }, Cmd.none )
+                    ( { model | galleries = newGalleries ++ galleries }, Cmd.none )
             RemoteData.Failure error ->
                 ( model, Cmd.none )
             RemoteData.Loading ->
                 ( model, Cmd.none )
             RemoteData.NotAsked ->
                 ( model, Cmd.none )
-            -- let
-            --     galleries = model.galleries
-            -- in
-            --     ( { model | galleries = response :: galleries  }, Cmd.none )

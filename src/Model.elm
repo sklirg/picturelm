@@ -13,7 +13,7 @@ baseModel url =
             Just route -> route
             Nothing -> Home
     in
-        ( { galleries = [ testGallery ]
+        ( { galleries = []
             , route = initRoute
             }
         , Cmd.none )
@@ -23,14 +23,3 @@ type alias AppModel =
     { galleries: List Gallery
     , route: Route
     }
-
-
-testGallery : Gallery
-testGallery =
-    { title = "Gallery 1"
-    , id = Id "abcd"
-    , thumbnail = "https://picsum.photos/200?r"
-    }
-
-    -- , url = "/gallery/gallery-1"
-    -- , images = []

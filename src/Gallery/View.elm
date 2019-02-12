@@ -13,22 +13,21 @@ import Css exposing
     , textDecoration
     , width
     )
-import Gallery.Graphql exposing (APIGallery, APIModel, Response)
+import Gallery.Graphql exposing (Response)
 import Gallery.Model as Model exposing (Gallery, Image)
-import Gallery.Object exposing (GalleryNode, GalleryNodeEdge)
+import Gallery.Object
 import Gallery.Object.GalleryNode
 import Gallery.Object.GalleryNodeEdge
 import Gallery.Object.GalleryNodeConnection
-import Gallery.Query exposing (AllGalleriesOptionalArguments)
 import Gallery.Scalar exposing (Id(..))
 import Graphql.Operation exposing (RootQuery)
 import Graphql.Http
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, hardcoded, with)
-import Html.Styled exposing (Html, a, button, div, img, p, text)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
+import Html.Styled exposing (Html, a, div, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
 import Html.Styled.Events exposing (onClick)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..), routeToUrl)
+import Navigation exposing (Route(..))
 import Gallery.Query
 import RemoteData exposing (RemoteData)
 
@@ -88,15 +87,6 @@ galleryListView galleries = div
     ]
     (List.map galleryView galleries)
 
-
--- Requestish
-
--- galleryResp : SelectionSet Response RootQuery
--- galleryResp =
---     SelectionSet.map Response
---         (GalleryNode.title)
--- import Gallery.Query exposing (AllGalleriesOptionalArguments)
-
 apiGallery : SelectionSet Gallery Gallery.Object.GalleryNode
 apiGallery =
     SelectionSet.succeed Model.Gallery
@@ -105,24 +95,20 @@ apiGallery =
         |> with Gallery.Object.GalleryNode.thumbnail
         |> with (Gallery.Object.GalleryNode.description |> SelectionSet.map (Maybe.withDefault ""))
 
+apiGalleryNodeEdge : SelectionSet Gallery Gallery.Object.GalleryNodeEdge
+apiGalleryNodeEdge =
+    SelectionSet.succeed identity
+        |> with (Gallery.Object.GalleryNodeEdge.node apiGallery |> SelectionSet.nonNullOrFail)
 
--- apiGalleryNode : SelectionSet Gallery.Object.GalleryNode GalleryNodeEdge
--- apiGalleryNode =
---     SelectionSet.succeed Gallery.Object.GalleryNode
---         |> with (Gallery.Object.GalleryNodeEdge.node |> SelectionSet.nonNullOrFail)
-
--- apiGalleries : SelectionSet AllGalleriesOptionalArguments GalleryNodeEdge
--- apiGalleries =
---     SelectionSet.succeed AllGalleriesOptionalArguments
---         |> with (Gallery.Object.GalleryNodeConnection.edges apiGalleryNode |> SelectionSet.nonNullOrFail |> SelectionSet.nonNullElementsOrFail)
-
--- apiGalleries = 
+apiGalleries : SelectionSet (List Gallery) Gallery.Object.GalleryNodeConnection
+apiGalleries =
+    SelectionSet.succeed identity
+        |> with (Gallery.Object.GalleryNodeConnection.edges apiGalleryNodeEdge |> SelectionSet.nonNullElementsOrFail)
 
 query : SelectionSet Response RootQuery
 query =
     SelectionSet.succeed Response
-        |> with (Gallery.Query.gallery { id = Id "R2FsbGVyeU5vZGU6YzI0OThmZDItODEzYy00MjQxLWFhYjItYWZlNDhiZTU3YmEx" } apiGallery |> SelectionSet.nonNullOrFail)
-        -- |> with (Gallery.Query.allGalleries apiGalleries |> SelectionSet.nonNullOrFail)
+        |> with (Gallery.Query.allGalleries (\opts -> opts) apiGalleries |> SelectionSet.nonNullOrFail)
 
 makeRequest : Cmd AppMsg
 makeRequest =

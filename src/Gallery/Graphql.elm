@@ -20,7 +20,7 @@ type alias GalleryLookup = {
     }
 
 type alias Response = {
-    gallery: Gallery
+    galleries: List Gallery
     }
 
 type alias APIModel =

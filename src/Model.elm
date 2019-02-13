@@ -4,6 +4,7 @@ import Gallery.Model exposing (Gallery)
 import Msg exposing (AppMsg)
 import Navigation exposing (Route(..), locationHrefToRoute)
 import Gallery.Scalar exposing (Id(..))
+import Task
 
 
 baseModel : String -> ( AppModel, Cmd AppMsg )
@@ -16,7 +17,7 @@ baseModel url =
         ( { galleries = []
             , route = initRoute
             }
-        , Cmd.none )
+        , Task.succeed Msg.FetchGalleries |> Task.perform identity )
 
 
 type alias AppModel =

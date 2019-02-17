@@ -1,12 +1,13 @@
 module Msg exposing (AppMsg(..), send)
 
-import Navigation exposing (Route)
 import Gallery.Graphql exposing (APIModel)
-import Task
 import Gallery.Scalar exposing (Id(..))
+import Navigation exposing (Route)
+import Task
+
 
 type AppMsg
-    = UrlChanged(String)
+    = UrlChanged String
     | ChangeRoute Route
     | FetchGalleries
     | FetchImages Id

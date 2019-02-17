@@ -23,7 +23,8 @@ subscriptions _ =
     onUrlChange UrlChanged
 
 
+
 -- Navigation
 
-port onUrlChange : (String -> msg) -> Sub msg
 
+port onUrlChange : (String -> msg) -> Sub msg

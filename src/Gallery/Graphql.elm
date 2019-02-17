@@ -4,26 +4,33 @@ import Gallery.Model exposing (Gallery)
 import Gallery.Object exposing (GalleryNode)
 import Gallery.Object.GalleryNode
 import Gallery.Query exposing (AllGalleriesOptionalArguments)
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import Graphql.Http
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import RemoteData exposing (RemoteData)
 
 
-type alias APIGallery = {
-    title: String
+type alias APIGallery =
+    { title : String
     }
+
+
 
 -- OLD
 
-type alias GalleryLookup = {
-    title: String
+
+type alias GalleryLookup =
+    { title : String
     }
 
-type alias Response = {
-    galleries: List Gallery
+
+type alias Response =
+    { galleries : List Gallery
     }
+
 
 type alias APIModel =
     RemoteData (Graphql.Http.Error Response) Response
+
+
 
 ---

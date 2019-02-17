@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^3.2.0",
+    "elm-format": "^0.8.1",
     "elm-hot": "^1.0.1",
     "node-elm-compiler": "^5.0.1"
   },

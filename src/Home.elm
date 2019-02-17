@@ -21,9 +21,8 @@ import Css
         , width
         )
 import Gallery.View exposing (galleryListView, imageListView)
-import Html.Styled exposing (Html, a, button, div, p, text, toUnstyled)
-import Html.Styled.Attributes exposing (css, href)
-import Html.Styled.Events exposing (onClick)
+import Html.Styled exposing (Html, div, p, text, toUnstyled)
+import Html.Styled.Attributes exposing (css)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import Update exposing (getGalleryForSlug)

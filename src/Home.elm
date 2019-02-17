@@ -103,7 +103,6 @@ body model =
             ]
         ]
         [ router model
-        , button [ onClick FetchGalleries ] [ text "Fetch galleries" ]
         ]
 
 

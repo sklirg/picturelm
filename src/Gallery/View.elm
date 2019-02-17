@@ -2,7 +2,9 @@ module Gallery.View exposing (galleryListView, imageListView, makeRequest)
 
 import Css exposing
     ( backgroundColor
+    , block
     , color
+    , display
     , height
     , hex
     , marginLeft
@@ -23,13 +25,12 @@ import Gallery.Scalar exposing (Id(..))
 import Graphql.Operation exposing (RootQuery)
 import Graphql.Http
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
-import Html.Styled exposing (Html, a, div, img, p, text)
+import Html.Styled exposing (Html, div, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
-import Html.Styled.Events exposing (onClick)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..))
+import Navigation exposing (Route(..), link)
 import Gallery.Query
-import RemoteData exposing (RemoteData)
+import RemoteData
 
 imageView : Image -> Html msg
 imageView image = img [ src image.url ] []
@@ -52,15 +53,16 @@ galleryView gallery = div []
     [ div
         []
         [ p []
-            [ a
+            [ link (ChangeRoute (Navigation.Gallery gallery.title))
                 [ css [ color (hex "000")
                 , textDecoration none
                 ]
                 , href gallery.title
                 ]
-                [ text gallery.title ] ]
-        , a
-            [ onClick (ChangeRoute (Navigation.Gallery gallery.title))
+                [ text gallery.title ]
+            ]
+        , link (ChangeRoute (Navigation.Gallery gallery.title))
+            [ css [ display block ]
             ]
             [ img
                 [ css

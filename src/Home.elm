@@ -33,7 +33,7 @@ import Model exposing (AppModel)
 -- router : AppModel -> Html msg
 router model = case model.route of
     Home -> galleryListView model.galleries
-    Gallery _ -> div [] [ text "imagesss"] --imageListView []
+    Gallery _ -> imageListView []
     Image _ -> div [] [ text "Image" ]
 
 

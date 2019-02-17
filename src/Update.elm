@@ -1,11 +1,13 @@
 module Update exposing (update)
 
-import Debug
 import Model exposing (AppModel)
-import Msg exposing (AppMsg(..))
+import Msg exposing (AppMsg(..), send)
 import Navigation exposing (Route(..), locationHrefToRoute, pushUrl, routeToUrl)
+import Gallery.Model exposing (Gallery)
 import Gallery.View exposing (makeRequest)
+import Gallery.Scalar exposing (Id(..))
 import RemoteData
+import Navigation exposing (Route(..))
 
 update : AppMsg -> AppModel -> ( AppModel, Cmd AppMsg )
 update msg model =
@@ -15,8 +17,9 @@ update msg model =
                 route = case locationHrefToRoute url of
                     Just r -> r
                     Nothing -> Home
+                fetchRoute = loadPath route model
             in
-            ( { model | route = route }, Cmd.none )
+            ( { model | route = route }, send fetchRoute )
         ChangeRoute route ->
             let
                 url = routeToUrl route
@@ -37,3 +40,26 @@ update msg model =
                 ( model, Cmd.none )
             RemoteData.NotAsked ->
                 ( model, Cmd.none )
+        FetchNothing ->
+            ( model, Cmd.none )
+        FetchImages id ->
+            ( model, Cmd.none )
+        FetchImageInfo id ->
+            ( model, Cmd.none )
+
+
+loadPath : Route -> AppModel -> AppMsg
+loadPath route model =
+    if model.route == route
+        then FetchNothing
+    else
+        case route of
+            Home -> FetchNothing
+            Navigation.Gallery slug -> FetchImages (getGalleryForSlug slug model.galleries)
+            Image slug -> FetchImageInfo (getGalleryForSlug slug model.galleries) -- get image for slug
+
+getGalleryForSlug : String -> List Gallery -> Id
+getGalleryForSlug slug galleries =
+    case List.filter (\gallery -> gallery.title == slug) galleries of
+        head :: _ -> Id head.title
+        [] -> Id ""

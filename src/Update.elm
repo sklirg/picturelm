@@ -87,12 +87,13 @@ loadPath route model =
 
 getGalleryForSlug : String -> List Gallery -> Gallery
 getGalleryForSlug slug galleries =
-    case List.filter (\gallery -> gallery.title == slug) galleries of
+    case List.filter (\gallery -> gallery.slug == slug) galleries of
         head :: _ ->
             head
 
         [] ->
             { title = ""
+            , slug = ""
             , description = ""
             , images = []
             , thumbnail = ""

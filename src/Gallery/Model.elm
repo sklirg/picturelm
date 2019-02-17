@@ -6,6 +6,7 @@ import Gallery.Scalar exposing (Id(..))
 type alias Gallery =
     { id : Id
     , title : String
+    , slug : String
     , thumbnail : String
     , description : String
     , images : List Image

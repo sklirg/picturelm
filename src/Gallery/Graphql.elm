@@ -39,10 +39,7 @@ image : SelectionSet Image Gallery.Object.ImageNode
 image =
     Graphql.SelectionSet.succeed Image
         |> with Gallery.Object.ImageNode.title
-        |> with
-            (Gallery.Object.ImageNode.imageUrl
-                |> Graphql.SelectionSet.nonNullOrFail
-            )
+        |> with Gallery.Object.ImageNode.imageUrl
 
 
 imageToNode : SelectionSet Image Gallery.Object.ImageNodeEdge

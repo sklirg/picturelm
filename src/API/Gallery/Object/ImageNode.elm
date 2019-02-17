@@ -68,6 +68,6 @@ gallery object_ =
     Object.selectionForCompositeField "gallery" [] object_ (identity >> Decode.nullable)
 
 
-imageUrl : SelectionSet (Maybe String) Gallery.Object.ImageNode
+imageUrl : SelectionSet String Gallery.Object.ImageNode
 imageUrl =
-    Object.selectionForField "(Maybe String)" "imageUrl" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "imageUrl" [] Decode.string

@@ -87,7 +87,7 @@ galleryView gallery =
                     ]
                     [ text (gallery.title ++ " (" ++ String.fromInt (List.length gallery.images) ++ ")") ]
                 ]
-            , link (ChangeRoute (Navigation.Gallery gallery.title))
+            , link (ChangeRoute (Navigation.Gallery gallery.slug))
                 [ css [ display block ]
                 ]
                 [ img
@@ -127,6 +127,7 @@ apiGallery =
     SelectionSet.succeed Model.Gallery
         |> with Gallery.Object.GalleryNode.id
         |> with Gallery.Object.GalleryNode.title
+        |> with Gallery.Object.GalleryNode.slug
         |> with Gallery.Object.GalleryNode.thumbnail
         |> with (Gallery.Object.GalleryNode.description |> SelectionSet.map (Maybe.withDefault ""))
         |> with imageSet

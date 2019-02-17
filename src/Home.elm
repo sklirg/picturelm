@@ -24,10 +24,9 @@ import Gallery.View exposing (galleryListView, imageListView)
 import Html.Styled exposing (Html, a, button, div, p, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, href)
 import Html.Styled.Events exposing (onClick)
-import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..))
-import VirtualDom exposing (Node)
+import Update exposing (getGalleryForSlug)
 
 
 
@@ -39,8 +38,15 @@ router model =
         Home ->
             galleryListView model.galleries
 
-        Gallery _ ->
-            imageListView []
+        Gallery slug ->
+            let
+                gallery =
+                    getGalleryForSlug slug model.galleries
+
+                images =
+                    gallery.images
+            in
+            imageListView images
 
         Image _ ->
             div [] [ text "Image" ]

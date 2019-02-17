@@ -1,4 +1,4 @@
-module Update exposing (update)
+module Update exposing (getGalleryForSlug, update)
 
 import Gallery.Model exposing (Gallery)
 import Gallery.Scalar exposing (Id(..))
@@ -79,21 +79,31 @@ loadPath route model =
                 FetchNothing
 
             Navigation.Gallery slug ->
-                FetchImages (getGalleryForSlug slug model.galleries)
+                FetchImages (getGalleryIdForSlug slug model.galleries)
 
             Image slug ->
-                FetchImageInfo (getGalleryForSlug slug model.galleries)
+                FetchImageInfo (getGalleryIdForSlug slug model.galleries)
+
+
+getGalleryForSlug : String -> List Gallery -> Gallery
+getGalleryForSlug slug galleries =
+    case List.filter (\gallery -> gallery.title == slug) galleries of
+        head :: _ ->
+            head
+
+        [] ->
+            { title = ""
+            , description = ""
+            , images = []
+            , thumbnail = ""
+            , id = Id ""
+            }
 
 
 
 -- get image for slug
 
 
-getGalleryForSlug : String -> List Gallery -> Id
-getGalleryForSlug slug galleries =
-    case List.filter (\gallery -> gallery.title == slug) galleries of
-        head :: _ ->
-            Id head.title
-
-        [] ->
-            Id ""
+getGalleryIdForSlug : String -> List Gallery -> Id
+getGalleryIdForSlug slug galleries =
+    (getGalleryForSlug slug galleries).id

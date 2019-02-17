@@ -16,7 +16,7 @@ import Css
         , textDecoration
         , width
         )
-import Gallery.Graphql exposing (Response)
+import Gallery.Graphql exposing (Response, imageSet)
 import Gallery.Model as Model exposing (Gallery, Image)
 import Gallery.Object
 import Gallery.Object.GalleryNode
@@ -36,7 +36,14 @@ import RemoteData
 
 imageView : Image -> Html msg
 imageView image =
-    img [ src image.url ] []
+    img
+        [ css
+            [ height (rem 15)
+            , width (rem 20)
+            ]
+        , src image.imageUrl
+        ]
+        []
 
 
 imageListView : List Image -> Html msg
@@ -51,7 +58,15 @@ imageListView images =
             , marginRight (rem 1)
             ]
         ]
-        (List.map imageView images)
+        [ div
+            []
+            [ p []
+                [ text (String.fromInt (List.length images) ++ " image(s)") ]
+            , div
+                []
+                (List.map imageView images)
+            ]
+        ]
 
 
 
@@ -70,7 +85,7 @@ galleryView gallery =
                         ]
                     , href gallery.title
                     ]
-                    [ text gallery.title ]
+                    [ text (gallery.title ++ " (" ++ String.fromInt (List.length gallery.images) ++ ")") ]
                 ]
             , link (ChangeRoute (Navigation.Gallery gallery.title))
                 [ css [ display block ]
@@ -114,6 +129,7 @@ apiGallery =
         |> with Gallery.Object.GalleryNode.title
         |> with Gallery.Object.GalleryNode.thumbnail
         |> with (Gallery.Object.GalleryNode.description |> SelectionSet.map (Maybe.withDefault ""))
+        |> with imageSet
 
 
 apiGalleryNodeEdge : SelectionSet Gallery Gallery.Object.GalleryNodeEdge

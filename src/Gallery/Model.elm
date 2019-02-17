@@ -8,14 +8,13 @@ type alias Gallery =
     , title : String
     , thumbnail : String
     , description : String
-
-    -- , url: String
-    -- , images: List Image
+    , images : List Image
     }
 
 
 type alias Image =
     { title : String
-    , url : String
-    , thumbnail : String
+    , imageUrl : String
+
+    -- , thumbnail : String
     }

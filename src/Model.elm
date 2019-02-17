@@ -1,6 +1,6 @@
 module Model exposing (AppModel, baseModel)
 
-import Gallery.Model exposing (Gallery)
+import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
 import Msg exposing (AppMsg, send)
 import Navigation exposing (Route(..), locationHrefToRoute)

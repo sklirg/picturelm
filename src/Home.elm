@@ -25,7 +25,7 @@ import Html.Styled exposing (Html, a, button, div, p, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, href)
 import Html.Styled.Events exposing (onClick)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..))
+import Navigation exposing (Route(..), link)
 import Update exposing (getGalleryForSlug)
 
 
@@ -70,7 +70,7 @@ home model =
         ]
 
 
-header : Html msg
+header : Html AppMsg
 header =
     div
         [ css
@@ -84,8 +84,8 @@ header =
                 , displayFlex
                 ]
             ]
-            [ a
-                [ css [ color (hex "fff") ], href "/" ]
+            [ link (ChangeRoute Home)
+                [ css [ color (hex "fff") ] ]
                 [ text "Picturelm" ]
             ]
         ]

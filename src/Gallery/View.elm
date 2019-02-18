@@ -1,4 +1,4 @@
-module Gallery.View exposing (galleryListView, imageListView, query, singleImageView)
+module Gallery.View exposing (galleryListView, imageListView, singleImageView)
 
 import Css
     exposing
@@ -20,16 +20,7 @@ import Css
         , vw
         , width
         )
-import Gallery.Graphql exposing (Response, imageSet)
-import Gallery.Model as Model exposing (Gallery, Image)
-import Gallery.Object
-import Gallery.Object.GalleryNode
-import Gallery.Object.GalleryNodeConnection
-import Gallery.Object.GalleryNodeEdge
-import Gallery.Query
-import Gallery.Scalar exposing (Id(..))
-import Graphql.Operation exposing (RootQuery)
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
+import Gallery.Model exposing (Gallery, Image)
 import Html.Styled exposing (Html, div, h1, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
 import Msg exposing (AppMsg(..))
@@ -148,32 +139,3 @@ galleryListView galleries =
             ]
         ]
         (List.map galleryView galleries)
-
-
-apiGallery : SelectionSet Gallery Gallery.Object.GalleryNode
-apiGallery =
-    SelectionSet.succeed Model.Gallery
-        |> with Gallery.Object.GalleryNode.id
-        |> with Gallery.Object.GalleryNode.title
-        |> with Gallery.Object.GalleryNode.slug
-        |> with Gallery.Object.GalleryNode.thumbnail
-        |> with (Gallery.Object.GalleryNode.description |> SelectionSet.map (Maybe.withDefault ""))
-        |> with imageSet
-
-
-apiGalleryNodeEdge : SelectionSet Gallery Gallery.Object.GalleryNodeEdge
-apiGalleryNodeEdge =
-    SelectionSet.succeed identity
-        |> with (Gallery.Object.GalleryNodeEdge.node apiGallery |> SelectionSet.nonNullOrFail)
-
-
-apiGalleries : SelectionSet (List Gallery) Gallery.Object.GalleryNodeConnection
-apiGalleries =
-    SelectionSet.succeed identity
-        |> with (Gallery.Object.GalleryNodeConnection.edges apiGalleryNodeEdge |> SelectionSet.nonNullElementsOrFail)
-
-
-query : SelectionSet Response RootQuery
-query =
-    SelectionSet.succeed Response
-        |> with (Gallery.Query.allGalleries (\opts -> opts) apiGalleries |> SelectionSet.nonNullOrFail)

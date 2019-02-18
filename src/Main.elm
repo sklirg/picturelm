@@ -2,13 +2,13 @@ port module Main exposing (main)
 
 import Browser
 import Home exposing (view)
-import Model exposing (AppModel, baseModel)
+import Model exposing (AppModel, Flags, baseModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..))
 import Update exposing (update)
 
 
-main : Program String AppModel AppMsg
+main : Program Flags AppModel AppMsg
 main =
     Browser.element
         { init = baseModel

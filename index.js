@@ -2,7 +2,10 @@ import { Elm } from './src/Main.elm';
 
 const app = Elm.Main.init({
   node: document.getElementById("main"),
-  flags: location.href,
+  flags: {
+    api: process.env.PE_GRAPHQL_API || "",
+    location: location.href
+  }
 });
 
 // Add routing as of https://github.com/elm/browser/blob/1.0.0/notes/navigation-in-elements.md

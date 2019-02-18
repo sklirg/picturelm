@@ -1,4 +1,4 @@
-module Gallery.View exposing (galleryListView, imageListView, makeRequest)
+module Gallery.View exposing (galleryListView, imageListView, query)
 
 import Css
     exposing
@@ -149,10 +149,3 @@ query : SelectionSet Response RootQuery
 query =
     SelectionSet.succeed Response
         |> with (Gallery.Query.allGalleries (\opts -> opts) apiGalleries |> SelectionSet.nonNullOrFail)
-
-
-makeRequest : Cmd AppMsg
-makeRequest =
-    query
-        |> Graphql.Http.queryRequest "http://localhost:8000/graphql"
-        |> Graphql.Http.send (RemoteData.fromResult >> ReceiveGalleries)

@@ -1,4 +1,4 @@
-module Model exposing (AppModel, baseModel)
+module Model exposing (AppModel, Flags, baseModel)
 
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
@@ -6,11 +6,11 @@ import Msg exposing (AppMsg, send)
 import Navigation exposing (Route(..), locationHrefToRoute)
 
 
-baseModel : String -> ( AppModel, Cmd AppMsg )
-baseModel url =
+baseModel : Flags -> ( AppModel, Cmd AppMsg )
+baseModel flags =
     let
         initRoute =
-            case locationHrefToRoute url of
+            case locationHrefToRoute flags.location of
                 Just route ->
                     route
 
@@ -19,12 +19,20 @@ baseModel url =
     in
     ( { galleries = []
       , route = initRoute
+      , api = flags.api
       }
     , send Msg.FetchGalleries
     )
 
 
+type alias Flags =
+    { location : String
+    , api : String
+    }
+
+
 type alias AppModel =
     { galleries : List Gallery
     , route : Route
+    , api : String
     }

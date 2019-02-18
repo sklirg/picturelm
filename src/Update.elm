@@ -2,7 +2,7 @@ module Update exposing (getGalleryForSlug, update)
 
 import Gallery.Model exposing (Gallery)
 import Gallery.Scalar exposing (Id(..))
-import Gallery.View exposing (makeRequest)
+import Graphql exposing (makeRequest)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..), send)
 import Navigation exposing (Route(..), locationHrefToRoute, pushUrl, routeToUrl)
@@ -35,7 +35,7 @@ update msg model =
             ( model, pushUrl url )
 
         FetchGalleries ->
-            ( model, makeRequest )
+            ( model, makeRequest model.api )
 
         ReceiveGalleries response ->
             case response of

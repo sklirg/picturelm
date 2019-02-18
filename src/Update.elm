@@ -1,6 +1,6 @@
-module Update exposing (getGalleryForSlug, update)
+module Update exposing (getGalleryForSlug, getImageForSlug, update)
 
-import Gallery.Model exposing (Gallery)
+import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
 import Graphql exposing (makeRequest)
 import Model exposing (AppModel)
@@ -81,8 +81,15 @@ loadPath route model =
             Navigation.Gallery slug ->
                 FetchImages (getGalleryIdForSlug slug model.galleries)
 
-            Image slug ->
-                FetchImageInfo (getGalleryIdForSlug slug model.galleries)
+            Navigation.Image gallerySlug imageSlug ->
+                let
+                    gallery =
+                        getGalleryForSlug gallerySlug model.galleries
+
+                    image =
+                        getImageForSlug imageSlug gallery.images
+                in
+                FetchImageInfo (Id gallery.slug)
 
 
 getGalleryForSlug : String -> List Gallery -> Gallery
@@ -98,6 +105,18 @@ getGalleryForSlug slug galleries =
             , images = []
             , thumbnail = ""
             , id = Id ""
+            }
+
+
+getImageForSlug : String -> List Image -> Image
+getImageForSlug slug images =
+    case List.filter (\image -> image.title == slug) images of
+        head :: _ ->
+            head
+
+        [] ->
+            { title = ""
+            , imageUrl = ""
             }
 
 

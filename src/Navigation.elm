@@ -10,7 +10,7 @@ import Url.Parser as Url exposing ((</>), map, oneOf, parse, s, string, top)
 type Route
     = Home
     | Gallery String
-    | Image String
+    | Image String String
 
 
 link : msg -> List (Attribute msg) -> List (Html msg) -> Html msg
@@ -34,17 +34,18 @@ routeToUrl route =
         Home ->
             "/"
 
-        Gallery param ->
-            "/gallery/" ++ param
+        Gallery slug ->
+            "/gallery/" ++ slug
 
-        Image param ->
-            "/image/" ++ param
+        Image gallerySlug imageSlug ->
+            "/gallery/" ++ gallerySlug ++ "/" ++ imageSlug
 
 
 myParser : Url.Parser (Route -> Route) Route
 myParser =
     oneOf
         [ map Gallery (s "gallery" </> string)
+        , map Image (s "gallery" </> string </> string)
         , map Home top
         ]
 

@@ -20,12 +20,12 @@ import Css
         , vw
         , width
         )
-import Gallery.View exposing (galleryListView, imageListView)
+import Gallery.View exposing (galleryListView, imageListView, singleImageView)
 import Html.Styled exposing (Html, div, p, text, toUnstyled)
 import Html.Styled.Attributes exposing (css)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import Update exposing (getGalleryForSlug)
+import Update exposing (getGalleryForSlug, getImageForSlug)
 
 
 
@@ -41,14 +41,18 @@ router model =
             let
                 gallery =
                     getGalleryForSlug slug model.galleries
-
-                images =
-                    gallery.images
             in
-            imageListView images
+            imageListView gallery
 
-        Image _ ->
-            div [] [ text "Image" ]
+        Image gallerySlug imageSlug ->
+            let
+                gallery =
+                    getGalleryForSlug gallerySlug model.galleries
+
+                image =
+                    getImageForSlug imageSlug gallery.images
+            in
+            singleImageView image
 
 
 

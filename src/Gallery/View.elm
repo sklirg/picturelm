@@ -1,4 +1,4 @@
-module Gallery.View exposing (galleryListView, imageListView, query)
+module Gallery.View exposing (galleryListView, imageListView, query, singleImageView)
 
 import Css
     exposing
@@ -10,10 +10,12 @@ import Css
         , hex
         , marginLeft
         , marginRight
+        , maxWidth
         , none
         , property
         , rem
         , textDecoration
+        , vw
         , width
         )
 import Gallery.Graphql exposing (Response, imageSet)
@@ -24,30 +26,55 @@ import Gallery.Object.GalleryNodeConnection
 import Gallery.Object.GalleryNodeEdge
 import Gallery.Query
 import Gallery.Scalar exposing (Id(..))
-import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
-import Html.Styled exposing (Html, div, img, p, text)
+import Html.Styled exposing (Html, div, h1, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import RemoteData
 
 
-imageView : Image -> Html msg
-imageView image =
-    img
+singleImageView : Image -> Html msg
+singleImageView image =
+    div
         [ css
-            [ height (rem 15)
-            , width (rem 20)
+            [ property "display" "grid"
+            , property "grid-template-rows" "6rem 1fr"
+            , property "grid-gap" "1rem"
+            , property "justify-items" "center"
             ]
-        , src image.imageUrl
         ]
-        []
+        [ h1 [] [ text image.title ]
+        , img
+            [ src image.imageUrl
+            , css [ maxWidth (vw 100) ]
+            ]
+            []
+        ]
 
 
-imageListView : List Image -> Html msg
-imageListView images =
+imageView : Gallery -> Image -> Html AppMsg
+imageView gallery image =
+    div []
+        [ link (ChangeRoute (Navigation.Image gallery.slug image.title))
+            []
+            [ img
+                [ css
+                    [ height (rem 15)
+                    , width (rem 20)
+                    ]
+                , src image.imageUrl
+                ]
+                []
+            ]
+        ]
+
+
+
+-- imageListView : Gallery -> Html msg
+
+
+imageListView gallery =
     div
         [ css
             [ property "display" "grid"
@@ -61,10 +88,10 @@ imageListView images =
         [ div
             []
             [ p []
-                [ text (String.fromInt (List.length images) ++ " image(s)") ]
+                [ text (String.fromInt (List.length gallery.images) ++ " image(s)") ]
             , div
                 []
-                (List.map imageView images)
+                (List.map (imageView gallery) gallery.images)
             ]
         ]
 
@@ -78,7 +105,7 @@ galleryView gallery =
         [ div
             []
             [ p []
-                [ link (ChangeRoute (Navigation.Gallery gallery.title))
+                [ link (ChangeRoute (Navigation.Gallery gallery.slug))
                     [ css
                         [ color (hex "000")
                         , textDecoration none

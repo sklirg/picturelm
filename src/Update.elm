@@ -120,10 +120,6 @@ getImageForSlug slug images =
             }
 
 
-
--- get image for slug
-
-
 getGalleryIdForSlug : String -> List Gallery -> Id
 getGalleryIdForSlug slug galleries =
     (getGalleryForSlug slug galleries).id

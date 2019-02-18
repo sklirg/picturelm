@@ -21,17 +21,16 @@ import Css
         , width
         )
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
+import Html
 import Html.Styled exposing (Html, div, p, text, toUnstyled)
 import Html.Styled.Attributes exposing (css)
+import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import Update exposing (getGalleryForSlug, getImageForSlug)
 
 
-
--- router : AppModel -> Html msg
-
-
+router : AppModel -> Html AppMsg
 router model =
     case model.route of
         Home ->
@@ -55,10 +54,7 @@ router model =
             singleImageView image
 
 
-
--- home : AppModel -> Html msg
-
-
+home : AppModel -> Html AppMsg
 home model =
     div
         [ css
@@ -94,10 +90,7 @@ header =
         ]
 
 
-
--- body : AppModel -> Html msg
-
-
+body : AppModel -> Html AppMsg
 body model =
     div
         [ css
@@ -137,9 +130,6 @@ footer =
         ]
 
 
-
--- view : AppModel -> Node msg
-
-
+view : AppModel -> Html.Html AppMsg
 view model =
     toUnstyled (home model)

@@ -62,10 +62,7 @@ imageView gallery image =
         ]
 
 
-
--- imageListView : Gallery -> Html msg
-
-
+imageListView : Gallery -> Html AppMsg
 imageListView gallery =
     div
         [ css
@@ -88,10 +85,7 @@ imageListView gallery =
         ]
 
 
-
--- galleryView : Gallery -> Html AppMsg
-
-
+galleryView : Gallery -> Html AppMsg
 galleryView gallery =
     div []
         [ div
@@ -123,10 +117,7 @@ galleryView gallery =
         ]
 
 
-
--- galleryListView : List Gallery -> Html msg
-
-
+galleryListView : List Gallery -> Html AppMsg
 galleryListView galleries =
     div
         [ css

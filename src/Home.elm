@@ -101,8 +101,9 @@ header =
 body model =
     div
         [ css
-            [ margin2 (rem 2) auto
+            [ marginBottom (rem 2)
             , width (pct 100)
+            , marginTop (rem 2)
             ]
         ]
         [ router model

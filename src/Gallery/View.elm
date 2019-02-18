@@ -8,8 +8,10 @@ import Css
         , display
         , height
         , hex
+        , marginBottom
         , marginLeft
         , marginRight
+        , marginTop
         , maxWidth
         , none
         , property
@@ -39,12 +41,11 @@ singleImageView image =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-rows" "6rem 1fr"
-            , property "grid-gap" "1rem"
+            , property "grid-template-rows" "4rem 1fr"
             , property "justify-items" "center"
             ]
         ]
-        [ h1 [] [ text image.title ]
+        [ h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]
         , img
             [ src image.imageUrl
             , css [ maxWidth (vw 100) ]

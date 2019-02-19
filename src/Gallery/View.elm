@@ -14,6 +14,7 @@ import Css
         , marginTop
         , maxWidth
         , none
+        , pct
         , property
         , rem
         , textDecoration
@@ -49,11 +50,11 @@ imageView : Gallery -> Image -> Html AppMsg
 imageView gallery image =
     div []
         [ link (ChangeRoute (Navigation.Image gallery.slug image.title))
-            []
+            [ css [ display block ] ]
             [ img
                 [ css
-                    [ height (rem 15)
-                    , width (rem 20)
+                    [ display block
+                    , width (pct 100)
                     ]
                 , src image.imageUrl
                 ]
@@ -67,22 +68,14 @@ imageListView gallery =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 1fr))"
-            , property "grid-gap" "1rem"
+            , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 15rem))"
+            , property "grid-gap" "0.5rem"
             , property "justify-items" "center"
             , marginLeft (rem 1)
             , marginRight (rem 1)
             ]
         ]
-        [ div
-            []
-            [ p []
-                [ text (String.fromInt (List.length gallery.images) ++ " image(s)") ]
-            , div
-                []
-                (List.map (imageView gallery) gallery.images)
-            ]
-        ]
+        (List.map (imageView gallery) gallery.images)
 
 
 galleryView : Gallery -> Html AppMsg

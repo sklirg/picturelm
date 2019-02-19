@@ -115,11 +115,9 @@ galleryListView galleries =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 1fr))"
-            , property "grid-gap" "1rem"
+            , property "grid-template-columns" "repeat(auto-fit, minmax(200px, 15rem))"
+            , property "grid-gap" "0.5rem"
             , property "justify-items" "center"
-            , marginLeft (rem 1)
-            , marginRight (rem 1)
             ]
         ]
         (List.map galleryView galleries)

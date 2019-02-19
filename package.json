@@ -15,7 +15,7 @@
     "node-elm-compiler": "^5.0.1"
   },
   "scripts": {
-    "api": "elm-graphql http://localhost:8000/graphql --base Gallery --output src/API",
+    "api": "elm-graphql http://localhost:8000/graphql --base Gallery --output gen",
     "start": "parcel index.html"
   }
 }

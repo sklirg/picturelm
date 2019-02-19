@@ -80,7 +80,12 @@ imageListView gallery =
 
 galleryView : Gallery -> Html AppMsg
 galleryView gallery =
-    div []
+    div
+        [ css
+            [ marginLeft (rem 1)
+            , marginRight (rem 1)
+            ]
+        ]
         [ div
             []
             [ p []
@@ -99,8 +104,8 @@ galleryView gallery =
                 [ img
                     [ css
                         [ backgroundColor (hex "ddd")
-                        , width (rem 12.5)
-                        , height (rem 12.5)
+                        , display block
+                        , width (pct 100)
                         ]
                     , src gallery.thumbnail
                     ]

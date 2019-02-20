@@ -50,7 +50,11 @@ update msg model =
                     ( { model | galleries = newGalleries ++ galleries }, Cmd.none )
 
                 RemoteData.Failure error ->
-                    ( model, Cmd.none )
+                    let
+                        errors =
+                            [ "Failed to retrieve data from backend" ]
+                    in
+                    ( { model | errors = errors }, Cmd.none )
 
                 RemoteData.Loading ->
                     ( model, Cmd.none )

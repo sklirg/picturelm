@@ -64,7 +64,11 @@ home model =
             ]
         ]
         [ header
-        , body model
+        , if List.length model.errors == 0 then
+            body model
+
+          else
+            div [] (List.map (\error -> div [] [ text error ]) model.errors)
         , footer
         ]
 

@@ -46,6 +46,47 @@ singleImageView image =
         ]
 
 
+imageFileGetEnding : String -> String
+imageFileGetEnding filename =
+    let
+        numDots =
+            String.split "." filename
+
+        fileEnding =
+            case List.head (List.reverse numDots) of
+                Just val ->
+                    val
+
+                Nothing ->
+                    ""
+    in
+    fileEnding
+
+
+imageFileStripEnding : String -> String
+imageFileStripEnding filename =
+    let
+        fileEnding =
+            imageFileGetEnding filename
+
+        fileNameWithoutEnding =
+            String.slice 0 (String.length filename - (String.length fileEnding + 1)) filename
+    in
+    fileNameWithoutEnding
+
+
+imageThumb : String -> String
+imageThumb filename =
+    let
+        fileEnding =
+            "." ++ imageFileGetEnding filename
+
+        fileName =
+            imageFileStripEnding filename
+    in
+    fileName ++ "_thumb" ++ fileEnding
+
+
 imageView : Gallery -> Image -> Html AppMsg
 imageView gallery image =
     div []
@@ -56,7 +97,7 @@ imageView gallery image =
                     [ display block
                     , width (pct 100)
                     ]
-                , src image.imageUrl
+                , src (imageThumb image.imageUrl)
                 ]
                 []
             ]

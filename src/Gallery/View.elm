@@ -109,7 +109,7 @@ imageListView gallery =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 0.25fr))"
+            , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 1fr))"
             , property "grid-gap" "0.5rem"
             , property "justify-items" "center"
             , marginLeft (rem 1)
@@ -161,7 +161,7 @@ galleryListView galleries =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 0.25fr))"
+            , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 0.5fr))"
             , property "grid-gap" "0.5rem"
             , property "justify-items" "center"
             ]

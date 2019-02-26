@@ -17,6 +17,7 @@ steps:
         - push
     settings:
       bucket: picturelm
+      region: eu-central-1
       access_key:
         from_secret: aws_access_key_id
       secret_key:

@@ -91,7 +91,9 @@ imageView : Gallery -> Image -> Html AppMsg
 imageView gallery image =
     div []
         [ link (ChangeRoute (Navigation.Image gallery.slug image.title))
-            [ css [ display block ] ]
+            [ css [ display block ]
+            , href image.title
+            ]
             [ img
                 [ css
                     [ display block
@@ -135,12 +137,13 @@ galleryView gallery =
                         [ color (hex "000")
                         , textDecoration none
                         ]
-                    , href gallery.title
+                    , href gallery.slug
                     ]
                     [ text (gallery.title ++ " (" ++ String.fromInt (List.length gallery.images) ++ ")") ]
                 ]
             , link (ChangeRoute (Navigation.Gallery gallery.slug))
                 [ css [ display block ]
+                , href gallery.slug
                 ]
                 [ img
                     [ css

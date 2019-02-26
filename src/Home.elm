@@ -23,7 +23,7 @@ import Css
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
 import Html
 import Html.Styled exposing (Html, div, p, text, toUnstyled)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (css, href)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
@@ -88,7 +88,9 @@ header =
                 ]
             ]
             [ link (ChangeRoute Home)
-                [ css [ color (hex "fff") ] ]
+                [ css [ color (hex "fff") ]
+                , href "/"
+                ]
                 [ text "Picturelm" ]
             ]
         ]

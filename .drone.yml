@@ -1,0 +1,21 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: publish
+    image: plugins/s3
+    when:
+      branch:
+        - master
+      event:
+        - push
+    settings:
+      bucket: picturelm
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      source: dist/**/*
+      target: /
+      acl: public-read
+      strip_prefix: dist/

@@ -4,6 +4,8 @@ name: default
 steps:
   - name: build
     image: node:8-alpine
+    environment:
+      PE_GRAPHQL_API: https://camerabag.sklirg.io/graphql
     commands:
       - yarn
       - yarn build

@@ -2,6 +2,12 @@ kind: pipeline
 name: default
 
 steps:
+  - name: build
+    image: node-alpine
+    commands:
+      - yarn
+      - yarn build
+
   - name: publish
     image: plugins/s3
     when:

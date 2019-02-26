@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build
-    image: node-alpine
+    image: node:8-alpine
     commands:
       - yarn
       - yarn build

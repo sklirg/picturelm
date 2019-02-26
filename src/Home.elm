@@ -113,7 +113,7 @@ footer =
         [ css
             [ backgroundColor (hex "3c3c3c")
             , color (hex "ccc")
-            , width (vw 100)
+            , width (pct 100)
             ]
         ]
         [ div

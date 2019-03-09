@@ -1,4 +1,4 @@
-module Gallery.Graphql exposing (APIGallery, APIModel, ImagesRequest, ImagesResponse, Response, imageEdges, imageSet, images, query)
+module Gallery.Graphql exposing (APIGallery, ImagesRequest, ImagesResponse, Response, WebGalleries, imageEdges, imageSet, images, query)
 
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Object
@@ -31,7 +31,7 @@ type alias ImagesResponse =
     }
 
 
-type alias APIModel =
+type alias WebGalleries =
     RemoteData (Graphql.Http.Error Response) Response
 
 

@@ -1,6 +1,6 @@
 module Msg exposing (AppMsg(..), send)
 
-import Gallery.Graphql exposing (APIModel)
+import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Scalar exposing (Id(..))
 import Navigation exposing (Route)
 import Task
@@ -13,7 +13,7 @@ type AppMsg
     | FetchImages Id
     | FetchImageInfo Id
     | FetchNothing
-    | ReceiveGalleries APIModel
+    | ReceiveGalleries WebGalleries
 
 
 send : AppMsg -> Cmd AppMsg

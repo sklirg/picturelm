@@ -1,6 +1,6 @@
 module Graphql exposing (makeRequest)
 
-import Gallery.Graphql exposing (Response, query)
+import Gallery.Graphql exposing (query)
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.SelectionSet exposing (SelectionSet)

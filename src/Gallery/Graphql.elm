@@ -1,4 +1,4 @@
-module Gallery.Graphql exposing (APIGallery, ImagesRequest, ImagesResponse, Response, WebGalleries, imageEdges, imageSet, images, query)
+module Gallery.Graphql exposing (APIGallery, ImagesRequest, ImagesResponse, WebGalleries, imageEdges, imageSet, images, query)
 
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Object
@@ -21,18 +21,13 @@ type alias APIGallery =
     }
 
 
-type alias Response =
-    { galleries : List Gallery
-    }
-
-
 type alias ImagesResponse =
     { images : List Image
     }
 
 
 type alias WebGalleries =
-    RemoteData (Graphql.Http.Error Response) Response
+    RemoteData (Graphql.Http.Error (List Gallery)) (List Gallery)
 
 
 type alias ImagesRequest =
@@ -62,9 +57,9 @@ apiGalleries =
         |> with (Gallery.Object.GalleryNodeConnection.edges apiGalleryNodeEdge |> SelectionSet.nonNullElementsOrFail)
 
 
-query : SelectionSet Response RootQuery
+query : SelectionSet (List Gallery) RootQuery
 query =
-    SelectionSet.succeed Response
+    SelectionSet.succeed identity
         |> with (Gallery.Query.allGalleries (\opts -> opts) apiGalleries |> SelectionSet.nonNullOrFail)
 
 

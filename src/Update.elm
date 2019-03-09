@@ -40,14 +40,7 @@ update msg model =
         ReceiveGalleries response ->
             case response of
                 RemoteData.Success data ->
-                    let
-                        galleries =
-                            model.galleries
-
-                        newGalleries =
-                            data.galleries
-                    in
-                    ( { model | galleries = newGalleries ++ galleries }, Cmd.none )
+                    ( { model | galleries = data }, Cmd.none )
 
                 RemoteData.Failure error ->
                     let

@@ -13,9 +13,12 @@ import Css
         , marginRight
         , marginTop
         , maxWidth
+        , minHeight
+        , minWidth
         , none
         , pct
         , property
+        , px
         , rem
         , textDecoration
         , vw
@@ -98,6 +101,10 @@ imageView gallery image =
                 [ css
                     [ display block
                     , width (pct 100)
+                    , height (pct 100)
+                    , backgroundColor (hex "ccc")
+                    , minHeight (px 200)
+                    , minWidth (px 200)
                     ]
                 , src (imageThumb image.imageUrl)
                 ]

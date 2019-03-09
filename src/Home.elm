@@ -4,10 +4,16 @@ import Css
     exposing
         ( auto
         , backgroundColor
+        , center
         , color
+        , column
         , displayFlex
+        , flexDirection
+        , fontWeight
+        , height
         , hex
-        , margin2
+        , int
+        , justifyContent
         , marginBottom
         , marginLeft
         , marginRight
@@ -17,12 +23,11 @@ import Css
         , property
         , rem
         , vh
-        , vw
         , width
         )
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
 import Html
-import Html.Styled exposing (Html, div, p, text, toUnstyled)
+import Html.Styled exposing (Html, div, h1, p, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, href)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
@@ -84,15 +89,26 @@ header =
         ]
         [ div
             [ css
-                [ margin2 (rem 2) (rem 2)
-                , displayFlex
+                [ displayFlex
+                , justifyContent center
+                , flexDirection column
+                , marginLeft (rem 2)
+                , height (pct 100)
                 ]
             ]
             [ link (ChangeRoute Home)
-                [ css [ color (hex "fff") ]
+                [ css
+                    [ color (hex "fff") ]
                 , href "/"
                 ]
-                [ text "Picturelm" ]
+                [ h1
+                    [ css
+                        [ marginTop (rem 0)
+                        , marginBottom (rem 0)
+                        ]
+                    ]
+                    [ text "Picturelm" ]
+                ]
             ]
         ]
 
@@ -130,6 +146,7 @@ footer =
                 [ css
                     [ marginLeft auto
                     , marginRight auto
+                    , fontWeight (int 300)
                     ]
                 ]
                 [ text "Image gallery made with ❤ in Elm" ]

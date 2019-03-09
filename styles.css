@@ -14,3 +14,19 @@ html, body, div, p, img, picture, figure {
     margin: 0;
     padding: 0;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', sans-serif;
+    font-weight: 300;
+    color: #fafafa;
+}
+
+html, body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
+
+a, a:visited, a:active {
+    color: #ddd;
+    text-decoration: none;
+}

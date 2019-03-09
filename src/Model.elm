@@ -22,7 +22,6 @@ baseModel flags =
     ( { galleries = NotAsked
       , route = initRoute
       , api = flags.api
-      , errors = []
       }
     , send Msg.FetchGalleries
     )
@@ -38,5 +37,4 @@ type alias AppModel =
     { galleries : WebGalleries
     , route : Route
     , api : String
-    , errors : List String
     }

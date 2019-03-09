@@ -24,11 +24,13 @@ import Css
         , vw
         , width
         )
+import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Html.Styled exposing (Html, div, h1, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
+import RemoteData
 
 
 singleImageView : Image -> Html msg
@@ -166,14 +168,25 @@ galleryView gallery =
         ]
 
 
-galleryListView : List Gallery -> Html AppMsg
-galleryListView galleries =
-    div
-        [ css
-            [ property "display" "grid"
-            , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 0.5fr))"
-            , property "grid-gap" "0.5rem"
-            , property "justify-items" "center"
-            ]
-        ]
-        (List.map galleryView galleries)
+galleryListView : WebGalleries -> Html AppMsg
+galleryListView webGalleries =
+    case webGalleries of
+        RemoteData.Success galleries ->
+            div
+                [ css
+                    [ property "display" "grid"
+                    , property "grid-template-columns" "repeat(auto-fit, minmax(12.5rem, 0.5fr))"
+                    , property "grid-gap" "0.5rem"
+                    , property "justify-items" "center"
+                    ]
+                ]
+                (List.map galleryView galleries)
+
+        RemoteData.NotAsked ->
+            div [] [ text "Initializing application..." ]
+
+        RemoteData.Loading ->
+            div [] [ text "Loading galleries..." ]
+
+        RemoteData.Failure _ ->
+            div [] [ text "Something went wrong while fetching galleries!" ]

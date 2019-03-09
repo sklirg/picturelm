@@ -1,9 +1,11 @@
 module Model exposing (AppModel, Flags, baseModel)
 
+import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
 import Msg exposing (AppMsg, send)
 import Navigation exposing (Route(..), locationHrefToRoute)
+import RemoteData exposing (RemoteData(..))
 
 
 baseModel : Flags -> ( AppModel, Cmd AppMsg )
@@ -17,7 +19,7 @@ baseModel flags =
                 Nothing ->
                     Home
     in
-    ( { galleries = []
+    ( { galleries = NotAsked
       , route = initRoute
       , api = flags.api
       , errors = []
@@ -33,7 +35,7 @@ type alias Flags =
 
 
 type alias AppModel =
-    { galleries : List Gallery
+    { galleries : WebGalleries
     , route : Route
     , api : String
     , errors : List String

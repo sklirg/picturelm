@@ -27,7 +27,8 @@ import Html.Styled.Attributes exposing (css, href)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import Update exposing (getGalleryForSlug, getImageForSlug)
+import RemoteData
+import Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug)
 
 
 router : AppModel -> Html AppMsg
@@ -39,14 +40,14 @@ router model =
         Gallery slug ->
             let
                 gallery =
-                    getGalleryForSlug slug model.galleries
+                    getGalleryForWebGallerySlug slug model.galleries
             in
             imageListView gallery
 
         Image gallerySlug imageSlug ->
             let
                 gallery =
-                    getGalleryForSlug gallerySlug model.galleries
+                    getGalleryForWebGallerySlug gallerySlug model.galleries
 
                 image =
                     getImageForSlug imageSlug gallery.images

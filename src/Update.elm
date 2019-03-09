@@ -1,5 +1,6 @@
-module Update exposing (getGalleryForSlug, getImageForSlug, update)
+module Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug, update)
 
+import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
 import Graphql exposing (makeRequest)
@@ -38,22 +39,7 @@ update msg model =
             ( model, makeRequest model.api )
 
         ReceiveGalleries response ->
-            case response of
-                RemoteData.Success data ->
-                    ( { model | galleries = data }, Cmd.none )
-
-                RemoteData.Failure error ->
-                    let
-                        errors =
-                            [ "Failed to retrieve data from backend" ]
-                    in
-                    ( { model | errors = errors }, Cmd.none )
-
-                RemoteData.Loading ->
-                    ( model, Cmd.none )
-
-                RemoteData.NotAsked ->
-                    ( model, Cmd.none )
+            ( { model | galleries = response }, Cmd.none )
 
         FetchNothing ->
             ( model, Cmd.none )
@@ -76,17 +62,33 @@ loadPath route model =
                 FetchNothing
 
             Navigation.Gallery slug ->
-                FetchImages (getGalleryIdForSlug slug model.galleries)
+                FetchImages (getGalleryForWebGallerySlug slug model.galleries).id
 
             Navigation.Image gallerySlug imageSlug ->
                 let
                     gallery =
-                        getGalleryForSlug gallerySlug model.galleries
+                        getGalleryForWebGallerySlug gallerySlug model.galleries
 
                     image =
                         getImageForSlug imageSlug gallery.images
                 in
                 FetchImageInfo (Id gallery.slug)
+
+
+getGalleryForWebGallerySlug : String -> WebGalleries -> Gallery
+getGalleryForWebGallerySlug slug webGalleries =
+    case webGalleries of
+        RemoteData.Success galleries ->
+            getGalleryForSlug slug galleries
+
+        _ ->
+            { title = ""
+            , slug = ""
+            , description = ""
+            , images = []
+            , thumbnail = ""
+            , id = Id ""
+            }
 
 
 getGalleryForSlug : String -> List Gallery -> Gallery

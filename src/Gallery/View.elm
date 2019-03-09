@@ -31,6 +31,7 @@ import Html.Styled.Attributes exposing (css, href, src)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import RemoteData
+import Spinner exposing (textLoadingSpinner)
 
 
 singleImageView : Image -> Html msg
@@ -183,10 +184,10 @@ galleryListView webGalleries =
                 (List.map galleryView galleries)
 
         RemoteData.NotAsked ->
-            div [] [ text "Initializing application..." ]
+            textLoadingSpinner "Initializing application"
 
         RemoteData.Loading ->
-            div [] [ text "Loading galleries..." ]
+            textLoadingSpinner "Loading galleries"
 
         RemoteData.Failure _ ->
-            div [] [ text "Something went wrong while fetching galleries!" ]
+            div [] [ text "Something went wrong while fetching galleries" ]

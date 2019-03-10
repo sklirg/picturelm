@@ -34,7 +34,7 @@ import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, h1, img, p, text)
-import Html.Styled.Attributes exposing (css, href, src)
+import Html.Styled.Attributes exposing (css, href, src, title)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import RemoteData
@@ -138,6 +138,7 @@ nextImageIcon =
             [ fontSize (rem 3)
             , property "transform" "scale(-1, 1)"
             ]
+        , title "Next"
         ]
         [ text "👀" ]
 
@@ -148,6 +149,7 @@ prevImageIcon =
         [ css
             [ fontSize (rem 3)
             ]
+        , title "Previous"
         ]
         [ text "👀" ]
 

@@ -66,14 +66,14 @@ home model =
             , minHeight (vh 100)
             ]
         ]
-        [ header
+        [ header (getAppTitle model)
         , body model
         , footer
         ]
 
 
-header : Html AppMsg
-header =
+header : String -> Html AppMsg
+header headerText =
     div
         [ css
             [ backgroundColor (hex "3c3c3c")
@@ -100,7 +100,7 @@ header =
                         , marginBottom (rem 0)
                         ]
                     ]
-                    [ text "Picturelm" ]
+                    [ text headerText ]
                 ]
             ]
         ]
@@ -150,3 +150,28 @@ footer =
 view : AppModel -> Html.Html AppMsg
 view model =
     toUnstyled (home model)
+
+
+
+-- Utility functions
+
+
+getAppTitle : AppModel -> String
+getAppTitle model =
+    case model.route of
+        Gallery slug ->
+            let
+                gallery =
+                    getGalleryForWebGallerySlug slug model.galleries
+            in
+            gallery.title
+
+        Home ->
+            "Picturelm"
+
+        Image gallerySlug _ ->
+            let
+                gallery =
+                    getGalleryForWebGallerySlug gallerySlug model.galleries
+            in
+            gallery.title

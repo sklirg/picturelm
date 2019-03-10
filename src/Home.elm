@@ -132,7 +132,6 @@ footer =
             [ css
                 [ displayFlex
                 , marginTop (rem 2)
-                , marginBottom (rem 2)
                 ]
             ]
             [ p

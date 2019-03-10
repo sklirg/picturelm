@@ -5,9 +5,14 @@ import Css
         ( backgroundColor
         , block
         , color
+        , column
         , display
+        , displayFlex
+        , flexDirection
+        , fontSize
         , height
         , hex
+        , justifyContent
         , marginBottom
         , marginLeft
         , marginRight
@@ -20,22 +25,25 @@ import Css
         , property
         , px
         , rem
+        , spaceBetween
         , textDecoration
         , vw
         , width
         )
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
+import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, h1, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import RemoteData
 import Spinner exposing (textLoadingSpinner)
+import Update exposing (getImageForSlug)
 
 
-singleImageView : Image -> Html msg
-singleImageView image =
+imageViewFunc : Html msg -> Image -> Html msg
+imageViewFunc imgHeader image =
     div
         [ css
             [ property "display" "grid"
@@ -43,13 +51,173 @@ singleImageView image =
             , property "justify-items" "center"
             ]
         ]
-        [ h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]
+        [ imgHeader
         , img
             [ src image.imageUrl
             , css [ maxWidth (vw 100) ]
             ]
             []
         ]
+
+
+imageViewWithPrevNext : Gallery -> Image -> Image -> Image -> Html AppMsg
+imageViewWithPrevNext gallery prevImage nextImage image =
+    imageViewFunc
+        (div
+            [ css
+                [ displayFlex
+                , justifyContent spaceBetween
+                , width (pct 100)
+                ]
+            ]
+            [ prevImageLink gallery prevImage
+            , h1
+                [ css
+                    [ displayFlex
+                    , property "align-self" "flex-start"
+                    , marginTop (rem 0)
+                    , marginBottom (rem 0)
+                    , flexDirection column
+                    ]
+                ]
+                [ text image.title
+                ]
+            , nextImageLink gallery nextImage
+            ]
+        )
+        image
+
+
+imageViewPrev : Gallery -> Image -> Image -> Html AppMsg
+imageViewPrev gallery prevImage image =
+    imageViewFunc
+        (div
+            [ css
+                [ displayFlex
+                , justifyContent spaceBetween
+                , width (pct 100)
+                ]
+            ]
+            [ prevImageLink gallery prevImage
+            , h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]
+            , div [ css [ property "filter" "opacity(calc(1/3)) grayscale(100%)" ] ] [ nextImageIcon ]
+            ]
+        )
+        image
+
+
+imageViewNext : Gallery -> Image -> Image -> Html AppMsg
+imageViewNext gallery nextImage image =
+    imageViewFunc
+        (div
+            [ css
+                [ displayFlex
+                , justifyContent spaceBetween
+                , width (pct 100)
+                ]
+            ]
+            [ div [ css [ property "filter" "opacity(calc(1/3)) grayscale(100%)" ] ] [ prevImageIcon ]
+            , h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]
+            , nextImageLink gallery nextImage
+            ]
+        )
+        image
+
+
+prevImageLink : Gallery -> Image -> Html AppMsg
+prevImageLink gallery image =
+    link (ChangeRoute (Navigation.Image gallery.slug image.title))
+        [ href image.title ]
+        [ prevImageIcon ]
+
+
+nextImageIcon : Html msg
+nextImageIcon =
+    div
+        [ css
+            [ fontSize (rem 3)
+            , property "transform" "scale(-1, 1)"
+            ]
+        ]
+        [ text "👀" ]
+
+
+prevImageIcon : Html msg
+prevImageIcon =
+    div
+        [ css
+            [ fontSize (rem 3)
+            ]
+        ]
+        [ text "👀" ]
+
+
+nextImageLink : Gallery -> Image -> Html AppMsg
+nextImageLink gallery image =
+    link (ChangeRoute (Navigation.Image gallery.slug image.title))
+        [ href image.title ]
+        [ nextImageIcon ]
+
+
+ivCurrentOnly : Image -> Html msg
+ivCurrentOnly image =
+    imageViewFunc (h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]) image
+
+
+singleImageView : Gallery -> String -> Html AppMsg
+singleImageView gallery slug =
+    let
+        image =
+            getImageForSlug slug gallery.images
+
+        threeImages =
+            getTriplet image gallery.images
+
+        prevImage =
+            case threeImages of
+                [ prev, _, _ ] ->
+                    prev
+
+                [] ->
+                    image
+
+                _ :: _ ->
+                    image
+
+        nextImage =
+            case threeImages of
+                [ _, _, next ] ->
+                    next
+
+                [] ->
+                    image
+
+                _ :: _ ->
+                    image
+
+        -- This will be next/previous if we're at the start/end of the list
+        middleImage =
+            case threeImages of
+                [ _, middle, _ ] ->
+                    middle
+
+                [] ->
+                    image
+
+                _ :: _ ->
+                    image
+    in
+    if prevImage == image then
+        imageViewNext gallery middleImage image
+
+    else if nextImage == image then
+        imageViewPrev gallery middleImage image
+
+    else if nextImage == image && prevImage == image then
+        ivCurrentOnly image
+
+    else
+        imageViewWithPrevNext gallery prevImage nextImage image
 
 
 imageFileGetEnding : String -> String

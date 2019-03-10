@@ -53,11 +53,8 @@ router model =
             let
                 gallery =
                     getGalleryForWebGallerySlug gallerySlug model.galleries
-
-                image =
-                    getImageForSlug imageSlug gallery.images
             in
-            singleImageView image
+            singleImageView gallery imageSlug
 
 
 home : AppModel -> Html AppMsg

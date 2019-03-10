@@ -27,7 +27,6 @@ import Css
         , rem
         , spaceBetween
         , textDecoration
-        , vw
         , width
         )
 import Gallery.Graphql exposing (WebGalleries)
@@ -54,7 +53,7 @@ imageViewFunc imgHeader image =
         [ imgHeader
         , img
             [ src image.imageUrl
-            , css [ maxWidth (vw 100) ]
+            , css [ maxWidth (pct 100) ]
             ]
             []
         ]

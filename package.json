@@ -17,7 +17,7 @@
   },
   "scripts": {
     "api": "elm-graphql http://localhost:8000/graphql --base Gallery --output gen",
-    "build": "parcel build --public-url '.' index.html",
+    "build": "parcel build --public-url '/' index.html",
     "start": "parcel index.html",
     "test": "elm-test"
   }

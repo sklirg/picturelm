@@ -4,6 +4,7 @@ import Css
     exposing
         ( backgroundColor
         , block
+        , borderRadius
         , color
         , column
         , display
@@ -21,6 +22,7 @@ import Css
         , minHeight
         , minWidth
         , none
+        , padding2
         , pct
         , property
         , px
@@ -32,13 +34,39 @@ import Css
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
-import Html.Styled exposing (Html, div, h1, img, p, text)
+import Html.Styled exposing (Html, div, h1, h2, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src, title)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import RemoteData
 import Spinner exposing (textLoadingSpinner)
 import Update exposing (getImageForSlug)
+
+
+backgroundedLabel : String -> String -> Html msg
+backgroundedLabel hexColor txt =
+    div
+        [ css
+            [ padding2 (rem 0.1) (rem 0.4)
+            , backgroundColor (hex hexColor)
+            , borderRadius (rem 0.25)
+            ]
+        ]
+        [ text txt ]
+
+
+tag : String -> String -> Html msg
+tag key val =
+    div
+        [ css
+            [ displayFlex
+            , marginLeft (rem 0.5)
+            , marginRight (rem 0.5)
+            ]
+        ]
+        [ backgroundedLabel "d4d4d4" key
+        , backgroundedLabel "c3c3c3" val
+        ]
 
 
 imageViewFunc : Html msg -> Image -> Html msg
@@ -56,6 +84,9 @@ imageViewFunc imgHeader image =
             , css [ maxWidth (pct 100) ]
             ]
             []
+        , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]
+            [ h2 [] [ text "Metadata" ]
+            ]
         ]
 
 

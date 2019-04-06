@@ -1,7 +1,8 @@
 module Gallery.Graphql exposing (APIGallery, ImagesRequest, ImagesResponse, WebGalleries, imageEdges, imageSet, images, query)
 
-import Gallery.Model exposing (Gallery, Image)
+import Gallery.Model exposing (ExifData, Gallery, Image, baseExifData)
 import Gallery.Object
+import Gallery.Object.ExifNode
 import Gallery.Object.GalleryNode
 import Gallery.Object.GalleryNodeConnection
 import Gallery.Object.GalleryNodeEdge
@@ -63,11 +64,25 @@ query =
         |> with (Gallery.Query.allGalleries (\opts -> opts) apiGalleries |> SelectionSet.nonNullOrFail)
 
 
+exifDecoder : SelectionSet ExifData Gallery.Object.ExifNode
+exifDecoder =
+    SelectionSet.map8 ExifData
+        Gallery.Object.ExifNode.aperture
+        Gallery.Object.ExifNode.cameraModel
+        Gallery.Object.ExifNode.exposureProgram
+        Gallery.Object.ExifNode.focalLength
+        Gallery.Object.ExifNode.fStop
+        Gallery.Object.ExifNode.iso
+        Gallery.Object.ExifNode.lensModel
+        Gallery.Object.ExifNode.shutterSpeed
+
+
 image : SelectionSet Image Gallery.Object.ImageNode
 image =
     SelectionSet.succeed Image
         |> with Gallery.Object.ImageNode.title
         |> with Gallery.Object.ImageNode.imageUrl
+        |> with (Gallery.Object.ImageNode.exif exifDecoder |> SelectionSet.withDefault baseExifData)
 
 
 imageToNode : SelectionSet Image Gallery.Object.ImageNodeEdge

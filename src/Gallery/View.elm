@@ -10,6 +10,7 @@ import Css
         , display
         , displayFlex
         , flexDirection
+        , flexWrap
         , fontSize
         , height
         , hex
@@ -30,9 +31,10 @@ import Css
         , spaceBetween
         , textDecoration
         , width
+        , wrap
         )
 import Gallery.Graphql exposing (WebGalleries)
-import Gallery.Model exposing (Gallery, Image)
+import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, h1, h2, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src, title)
@@ -60,12 +62,25 @@ tag key val =
     div
         [ css
             [ displayFlex
-            , marginLeft (rem 0.5)
-            , marginRight (rem 0.5)
+            , marginBottom (rem 0.5)
+            , marginRight (rem 0.25)
             ]
         ]
-        [ backgroundedLabel "d4d4d4" key
-        , backgroundedLabel "c3c3c3" val
+        [ backgroundedLabel "c3c3c3" key
+        , backgroundedLabel "d4d4d4" val
+        ]
+
+
+exifViewFunc : ExifData -> Html msg
+exifViewFunc exif =
+    div [ css [ displayFlex, flexWrap wrap, justifyContent spaceBetween, marginRight (rem -0.25) ] ]
+        [ div [] [ tag "Aperture" exif.aperture ]
+        , div [] [ tag "FStop" (String.fromFloat exif.fStop) ]
+        , div [] [ tag "Shutter speed" exif.shutterSpeed ]
+        , div [] [ tag "ISO" exif.iso ]
+        , div [] [ tag "Focal length" exif.focalLength ]
+        , div [] [ tag "Camera" exif.cameraModel ]
+        , div [] [ tag "Lens" exif.lensModel ]
         ]
 
 
@@ -74,7 +89,7 @@ imageViewFunc imgHeader image =
     div
         [ css
             [ property "display" "grid"
-            , property "grid-template-rows" "4rem 1fr"
+            , property "grid-template-rows" "4rem 1fr auto"
             , property "justify-items" "center"
             ]
         ]
@@ -86,6 +101,7 @@ imageViewFunc imgHeader image =
             []
         , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]
             [ h2 [] [ text "Metadata" ]
+            , exifViewFunc image.exif
             ]
         ]
 

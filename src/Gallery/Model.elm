@@ -1,4 +1,4 @@
-module Gallery.Model exposing (Gallery, Image)
+module Gallery.Model exposing (ExifData, Gallery, Image, baseExifData)
 
 import Gallery.Scalar exposing (Id(..))
 
@@ -16,6 +16,31 @@ type alias Gallery =
 type alias Image =
     { title : String
     , imageUrl : String
+    , exif : ExifData
 
     -- , thumbnail : String
+    }
+
+
+type alias ExifData =
+    { aperture : String
+    , cameraModel : String
+    , exposureProgram : String
+    , focalLength : String
+    , fStop : Float
+    , iso : String
+    , lensModel : String
+    , shutterSpeed : String
+    }
+
+
+baseExifData =
+    { aperture = ""
+    , cameraModel = ""
+    , exposureProgram = ""
+    , focalLength = ""
+    , fStop = 0
+    , iso = ""
+    , lensModel = ""
+    , shutterSpeed = ""
     }

@@ -1,7 +1,7 @@
 module Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug, update)
 
 import Gallery.Graphql exposing (WebGalleries)
-import Gallery.Model exposing (Gallery, Image)
+import Gallery.Model exposing (Gallery, Image, baseExifData)
 import Gallery.Scalar exposing (Id(..))
 import Graphql exposing (makeRequest)
 import Model exposing (AppModel)
@@ -116,6 +116,7 @@ getImageForSlug slug images =
         [] ->
             { title = ""
             , imageUrl = ""
+            , exif = baseExifData
             }
 
 

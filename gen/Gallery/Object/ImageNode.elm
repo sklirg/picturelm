@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.ImageNode exposing (datetime, description, exif, gallery, id, imageFile, imageUrl, latitude, longitude, title)
+module Gallery.Object.ImageNode exposing (datetime, description, exif, gallery, id, imageUrl, latitude, longitude, public, title)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -45,9 +45,9 @@ datetime =
 
 
 {-| -}
-imageFile : SelectionSet String Gallery.Object.ImageNode
-imageFile =
-    Object.selectionForField "String" "imageFile" [] Decode.string
+imageUrl : SelectionSet String Gallery.Object.ImageNode
+imageUrl =
+    Object.selectionForField "String" "imageUrl" [] Decode.string
 
 
 {-| -}
@@ -74,6 +74,7 @@ exif =
     Object.selectionForField "(Maybe ScalarCodecs.JSONString)" "exif" [] (Gallery.ScalarCodecs.codecs |> Gallery.Scalar.unwrapCodecs |> .codecJSONString |> .decoder |> Decode.nullable)
 
 
-imageUrl : SelectionSet String Gallery.Object.ImageNode
-imageUrl =
-    Object.selectionForField "String" "imageUrl" [] Decode.string
+{-| -}
+public : SelectionSet Bool Gallery.Object.ImageNode
+public =
+    Object.selectionForField "Bool" "public" [] Decode.bool

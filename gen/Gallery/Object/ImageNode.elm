@@ -68,10 +68,9 @@ gallery object_ =
     Object.selectionForCompositeField "gallery" [] object_ (identity >> Decode.nullable)
 
 
-{-| -}
-exif : SelectionSet (Maybe Gallery.ScalarCodecs.JSONString) Gallery.Object.ImageNode
-exif =
-    Object.selectionForField "(Maybe ScalarCodecs.JSONString)" "exif" [] (Gallery.ScalarCodecs.codecs |> Gallery.Scalar.unwrapCodecs |> .codecJSONString |> .decoder |> Decode.nullable)
+exif : SelectionSet decodesTo Gallery.Object.ExifNode -> SelectionSet (Maybe decodesTo) Gallery.Object.ImageNode
+exif object_ =
+    Object.selectionForCompositeField "exif" [] object_ (identity >> Decode.nullable)
 
 
 {-| -}

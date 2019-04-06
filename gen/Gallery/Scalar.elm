@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Scalar exposing (Codecs, DateTime(..), Id(..), JSONString(..), defaultCodecs, defineCodecs, unwrapCodecs, unwrapEncoder)
+module Gallery.Scalar exposing (Codecs, DateTime(..), Id(..), defaultCodecs, defineCodecs, unwrapCodecs, unwrapEncoder)
 
 import Graphql.Codec exposing (Codec)
 import Graphql.Internal.Builder.Object as Object
@@ -19,26 +19,20 @@ type Id
     = Id String
 
 
-type JSONString
-    = JSONString String
-
-
 defineCodecs :
     { codecDateTime : Codec valueDateTime
     , codecId : Codec valueId
-    , codecJSONString : Codec valueJSONString
     }
-    -> Codecs valueDateTime valueId valueJSONString
+    -> Codecs valueDateTime valueId
 defineCodecs definitions =
     Codecs definitions
 
 
 unwrapCodecs :
-    Codecs valueDateTime valueId valueJSONString
+    Codecs valueDateTime valueId
     ->
         { codecDateTime : Codec valueDateTime
         , codecId : Codec valueId
-        , codecJSONString : Codec valueJSONString
         }
 unwrapCodecs (Codecs unwrappedCodecs) =
     unwrappedCodecs
@@ -48,18 +42,17 @@ unwrapEncoder getter (Codecs unwrappedCodecs) =
     (unwrappedCodecs |> getter |> .encoder) >> Graphql.Internal.Encode.fromJson
 
 
-type Codecs valueDateTime valueId valueJSONString
-    = Codecs (RawCodecs valueDateTime valueId valueJSONString)
+type Codecs valueDateTime valueId
+    = Codecs (RawCodecs valueDateTime valueId)
 
 
-type alias RawCodecs valueDateTime valueId valueJSONString =
+type alias RawCodecs valueDateTime valueId =
     { codecDateTime : Codec valueDateTime
     , codecId : Codec valueId
-    , codecJSONString : Codec valueJSONString
     }
 
 
-defaultCodecs : RawCodecs DateTime Id JSONString
+defaultCodecs : RawCodecs DateTime Id
 defaultCodecs =
     { codecDateTime =
         { encoder = \(DateTime raw) -> Encode.string raw
@@ -68,9 +61,5 @@ defaultCodecs =
     , codecId =
         { encoder = \(Id raw) -> Encode.string raw
         , decoder = Object.scalarDecoder |> Decode.map Id
-        }
-    , codecJSONString =
-        { encoder = \(JSONString raw) -> Encode.string raw
-        , decoder = Object.scalarDecoder |> Decode.map JSONString
         }
     }

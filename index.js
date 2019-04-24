@@ -20,3 +20,5 @@ app.ports.pushUrl.subscribe(function(url) {
   history.pushState({}, '', url);
   app.ports.onUrlChange.send(location.href);
 });
+
+window.addEventListener("keydown", e => app.ports.onKeyPress.send(e.key));

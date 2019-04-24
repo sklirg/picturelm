@@ -14,6 +14,7 @@ type AppMsg
     | FetchImageInfo Id
     | FetchNothing
     | ReceiveGalleries WebGalleries
+    | OnKeyPress String
 
 
 send : AppMsg -> Cmd AppMsg

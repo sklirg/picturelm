@@ -20,7 +20,10 @@ main =
 
 subscriptions : AppModel -> Sub AppMsg
 subscriptions _ =
-    onUrlChange UrlChanged
+    Sub.batch
+        [ onUrlChange UrlChanged
+        , onKeyPress OnKeyPress
+        ]
 
 
 
@@ -28,3 +31,6 @@ subscriptions _ =
 
 
 port onUrlChange : (String -> msg) -> Sub msg
+
+
+port onKeyPress : (String -> msg) -> Sub msg

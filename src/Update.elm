@@ -3,6 +3,7 @@ module Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImage
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image, baseExifData)
 import Gallery.Scalar exposing (Id(..))
+import Gallery.Utils exposing (getTriplet)
 import Graphql exposing (makeRequest)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..), send)
@@ -49,6 +50,60 @@ update msg model =
 
         FetchImageInfo id ->
             ( model, Cmd.none )
+
+        OnKeyPress key ->
+            case model.route of
+                Navigation.Image gallerySlug imageSlug ->
+                    let
+                        gallery =
+                            getGalleryForWebGallerySlug gallerySlug model.galleries
+
+                        image =
+                            getImageForSlug imageSlug gallery.images
+
+                        triplet =
+                            getTriplet image gallery.images
+
+                        prevImage =
+                            case triplet of
+                                [ prev, _, _ ] ->
+                                    prev
+
+                                [] ->
+                                    image
+
+                                _ :: _ ->
+                                    image
+
+                        nextImage =
+                            case triplet of
+                                [ _, _, next ] ->
+                                    next
+
+                                [] ->
+                                    image
+
+                                _ :: _ ->
+                                    image
+
+                        cmd =
+                            case key of
+                                "ArrowRight" ->
+                                    send (ChangeRoute (Navigation.Image gallery.slug nextImage.title))
+
+                                "ArrowLeft" ->
+                                    send (ChangeRoute (Navigation.Image gallery.slug prevImage.title))
+
+                                "Escape" ->
+                                    send (ChangeRoute (Navigation.Gallery gallery.slug))
+
+                                _ ->
+                                    Cmd.none
+                    in
+                    ( model, cmd )
+
+                _ ->
+                    ( model, Cmd.none )
 
 
 loadPath : Route -> AppModel -> AppMsg

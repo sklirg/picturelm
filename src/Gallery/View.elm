@@ -30,6 +30,7 @@ import Css
         , rem
         , spaceBetween
         , textDecoration
+        , vh
         , width
         , wrap
         )
@@ -96,7 +97,7 @@ imageViewFunc imgHeader image =
         [ imgHeader
         , img
             [ src image.imageUrl
-            , css [ maxWidth (pct 100) ]
+            , css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
             ]
             []
         , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]

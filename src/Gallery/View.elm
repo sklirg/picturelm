@@ -39,6 +39,7 @@ import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, h1, h2, img, p, text)
 import Html.Styled.Attributes exposing (css, href, src, title)
+import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
 import RemoteData
@@ -95,11 +96,16 @@ imageViewFunc imgHeader image =
             ]
         ]
         [ imgHeader
-        , img
-            [ src image.imageUrl
-            , css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
-            ]
+        , node "div"
             []
+            [ ( image.imageUrl
+              , img
+                    [ src image.imageUrl
+                    , css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
+                    ]
+                    []
+              )
+            ]
         , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]
             [ h2 [] [ text "Metadata" ]
             , exifViewFunc image.exif

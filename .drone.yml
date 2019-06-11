@@ -5,7 +5,7 @@ steps:
   - name: build
     image: node:8-alpine
     environment:
-      PE_GRAPHQL_API: https://camerabag.k8s-prod.sklirg.io/graphql
+      PE_GRAPHQL_API: https://camerabag.sklirg.io/graphql
     commands:
       - yarn
       - yarn build
@@ -18,7 +18,7 @@ steps:
       event:
         - push
     settings:
-      bucket: picturelm-k8s
+      bucket: picturelm
       region: eu-central-1
       access_key:
         from_secret: aws_access_key_id

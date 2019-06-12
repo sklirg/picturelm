@@ -321,7 +321,7 @@ imageView gallery image =
     div []
         [ link (ChangeRoute (Navigation.Image gallery.slug image.title))
             [ css [ display block ]
-            , href image.title
+            , href (gallery.slug ++ "/" ++ image.title)
             ]
             [ img
                 [ css
@@ -376,7 +376,7 @@ galleryView gallery =
                 ]
             , link (ChangeRoute (Navigation.Gallery gallery.slug))
                 [ css [ display block ]
-                , href gallery.slug
+                , href ("gallery/" ++ gallery.slug)
                 ]
                 [ img
                     [ css

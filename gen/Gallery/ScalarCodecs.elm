@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.ScalarCodecs exposing (DateTime, Id, codecs)
+module Gallery.ScalarCodecs exposing (DateTime, Id, JSONString, codecs)
 
 import Gallery.Scalar exposing (defaultCodecs)
 import Json.Decode as Decode exposing (Decoder)
@@ -16,9 +16,14 @@ type alias Id =
     Gallery.Scalar.Id
 
 
-codecs : Gallery.Scalar.Codecs DateTime Id
+type alias JSONString =
+    Gallery.Scalar.JSONString
+
+
+codecs : Gallery.Scalar.Codecs DateTime Id JSONString
 codecs =
     Gallery.Scalar.defineCodecs
         { codecDateTime = defaultCodecs.codecDateTime
         , codecId = defaultCodecs.codecId
+        , codecJSONString = defaultCodecs.codecJSONString
         }

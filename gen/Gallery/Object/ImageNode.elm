@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.ImageNode exposing (datetime, description, exif, gallery, id, imageUrl, latitude, longitude, public, title)
+module Gallery.Object.ImageNode exposing (datetime, description, exif, gallery, id, imageUrl, latitude, longitude, public, sizes, title)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -77,3 +77,9 @@ exif object_ =
 public : SelectionSet Bool Gallery.Object.ImageNode
 public =
     Object.selectionForField "Bool" "public" [] Decode.bool
+
+
+{-| -}
+sizes : SelectionSet Gallery.ScalarCodecs.JSONString Gallery.Object.ImageNode
+sizes =
+    Object.selectionForField "ScalarCodecs.JSONString" "sizes" [] (Gallery.ScalarCodecs.codecs |> Gallery.Scalar.unwrapCodecs |> .codecJSONString |> .decoder)

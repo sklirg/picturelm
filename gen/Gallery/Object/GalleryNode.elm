@@ -27,15 +27,15 @@ id =
 
 
 {-| -}
-slug : SelectionSet String Gallery.Object.GalleryNode
-slug =
-    Object.selectionForField "String" "slug" [] Decode.string
-
-
-{-| -}
 title : SelectionSet String Gallery.Object.GalleryNode
 title =
     Object.selectionForField "String" "title" [] Decode.string
+
+
+{-| -}
+slug : SelectionSet String Gallery.Object.GalleryNode
+slug =
+    Object.selectionForField "String" "slug" [] Decode.string
 
 
 {-| -}

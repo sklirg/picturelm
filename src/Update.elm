@@ -172,6 +172,7 @@ getImageForSlug slug images =
             { title = ""
             , imageUrl = ""
             , exif = baseExifData
+            , sizes = []
             }
 
 

@@ -17,8 +17,7 @@ type alias Image =
     { title : String
     , imageUrl : String
     , exif : ExifData
-
-    -- , thumbnail : String
+    , sizes : List String
     }
 
 

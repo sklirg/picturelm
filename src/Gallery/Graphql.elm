@@ -14,6 +14,7 @@ import Gallery.Scalar exposing (Id(..))
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
+import Json.Decode exposing (Decoder, decodeString, decodeValue, list, string)
 import RemoteData exposing (RemoteData)
 
 
@@ -77,12 +78,41 @@ exifDecoder =
         Gallery.Object.ExifNode.shutterSpeed
 
 
+decodeStringWithDefault : Result Json.Decode.Error (List String) -> List String
+decodeStringWithDefault s =
+    case s of
+        Ok v ->
+            v
+
+        Err _ ->
+            [ "default return after deconstruct" ]
+
+
+getStringFromJsonString : Gallery.Scalar.JSONString -> String
+getStringFromJsonString s =
+    case s of
+        Gallery.Scalar.JSONString a ->
+            a
+
+
+decodeJsonStringToListString : Gallery.Scalar.JSONString -> List String
+decodeJsonStringToListString s =
+    decodeStringWithDefault (decodeString (list string) (getStringFromJsonString s))
+
+
+imageSizesDecoder : SelectionSet (List String) Gallery.Object.ImageNode
+imageSizesDecoder =
+    Gallery.Object.ImageNode.sizes
+        |> SelectionSet.map (\n -> decodeJsonStringToListString n)
+
+
 image : SelectionSet Image Gallery.Object.ImageNode
 image =
     SelectionSet.succeed Image
         |> with Gallery.Object.ImageNode.title
         |> with Gallery.Object.ImageNode.imageUrl
         |> with (Gallery.Object.ImageNode.exif exifDecoder |> SelectionSet.withDefault baseExifData)
+        |> with imageSizesDecoder
 
 
 imageToNode : SelectionSet Image Gallery.Object.ImageNodeEdge

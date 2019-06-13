@@ -38,7 +38,7 @@ import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, h1, h2, img, p, text)
-import Html.Styled.Attributes exposing (css, href, src, title)
+import Html.Styled.Attributes exposing (attribute, css, href, src, title)
 import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
@@ -86,6 +86,11 @@ exifViewFunc exif =
         ]
 
 
+addToListWithComma : String -> String -> String
+addToListWithComma prev next =
+    prev ++ "," ++ next
+
+
 imageViewFunc : Html msg -> Image -> Html msg
 imageViewFunc imgHeader image =
     div
@@ -101,6 +106,7 @@ imageViewFunc imgHeader image =
             [ ( image.imageUrl
               , img
                     [ src image.imageUrl
+                    , attribute "srcset" (List.foldl addToListWithComma "" image.sizes)
                     , css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
                     ]
                     []

@@ -1,7 +1,6 @@
 module Model exposing (AppModel, Flags, baseModel)
 
 import Gallery.Graphql exposing (WebGalleries)
-import Gallery.Model exposing (Gallery, Image)
 import Gallery.Scalar exposing (Id(..))
 import Msg exposing (AppMsg, send)
 import Navigation exposing (Route(..), locationHrefToRoute)

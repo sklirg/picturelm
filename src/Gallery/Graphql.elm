@@ -1,4 +1,4 @@
-module Gallery.Graphql exposing (APIGallery, ImagesRequest, ImagesResponse, WebGalleries, imageEdges, imageSet, images, query)
+module Gallery.Graphql exposing (ImagesRequest, WebGalleries, imageEdges, imageSet, query)
 
 import Gallery.Model exposing (ExifData, Gallery, Image, baseExifData)
 import Gallery.Object
@@ -14,18 +14,8 @@ import Gallery.Scalar exposing (Id(..))
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
-import Json.Decode exposing (Decoder, decodeString, decodeValue, list, string)
+import Json.Decode exposing (decodeString, list, string)
 import RemoteData exposing (RemoteData)
-
-
-type alias APIGallery =
-    { title : String
-    }
-
-
-type alias ImagesResponse =
-    { images : List Image
-    }
 
 
 type alias WebGalleries =
@@ -129,9 +119,3 @@ imageSet : SelectionSet (List Image) Gallery.Object.GalleryNode
 imageSet =
     Gallery.Object.GalleryNode.imageSet (\opts -> opts) imageEdges
         |> SelectionSet.nonNullOrFail
-
-
-images : SelectionSet ImagesResponse Gallery.Object.GalleryNode
-images =
-    SelectionSet.map ImagesResponse
-        imageSet

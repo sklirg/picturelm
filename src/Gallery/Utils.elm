@@ -17,15 +17,8 @@ getTriplet target items =
                 []
 
         -- []
-        a :: b ->
+        _ :: _ ->
             let
-                -- firstThree =
-                --     List.take 3 items
-                -- threeContaining =
-                --     if List.member target firstThree then
-                --         firstThree
-                --     else
-                --         getTriplet target (List.drop 1 items)
                 k =
                     case List.take 3 items of
                         [ x, y, z ] ->
@@ -42,19 +35,7 @@ getTriplet target items =
                         [] ->
                             []
 
-                        x :: y ->
+                        _ :: _ ->
                             []
             in
             k
-
-
-
--- [ a, b, c, d ] ->
---     if List.member target [ a, b, c ] then
---         [ a, b, c ]
---     else if List.member target [ b, c, d ] then
---         [ b, c, d ]
---     else
---         []
--- a :: b ->
---     [ "WATTEFX" ]

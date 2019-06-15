@@ -32,7 +32,7 @@ import Html.Styled.Attributes exposing (css, href, rel, target)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug)
+import Update exposing (getGalleryForWebGallerySlug)
 
 
 router : AppModel -> Html AppMsg

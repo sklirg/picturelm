@@ -45,10 +45,10 @@ update msg model =
         FetchNothing ->
             ( model, Cmd.none )
 
-        FetchImages id ->
+        FetchImages _ ->
             ( model, Cmd.none )
 
-        FetchImageInfo id ->
+        FetchImageInfo _ ->
             ( model, Cmd.none )
 
         OnKeyPress key ->
@@ -124,7 +124,7 @@ loadPath route model =
                     gallery =
                         getGalleryForWebGallerySlug gallerySlug model.galleries
 
-                    image =
+                    _ =
                         getImageForSlug imageSlug gallery.images
                 in
                 FetchImageInfo (Id gallery.slug)
@@ -184,8 +184,3 @@ getImageForSlug slug images =
             , exif = baseExifData
             , sizes = []
             }
-
-
-getGalleryIdForSlug : String -> List Gallery -> Id
-getGalleryIdForSlug slug galleries =
-    (getGalleryForSlug slug galleries).id

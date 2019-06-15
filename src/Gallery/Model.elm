@@ -33,6 +33,7 @@ type alias ExifData =
     }
 
 
+baseExifData : ExifData
 baseExifData =
     { aperture = ""
     , cameraModel = ""

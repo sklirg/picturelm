@@ -28,11 +28,10 @@ import Css
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
 import Html
 import Html.Styled exposing (Html, a, div, h1, p, text, toUnstyled)
-import Html.Styled.Attributes exposing (css, href, target)
+import Html.Styled.Attributes exposing (css, href, rel, target)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import RemoteData
 import Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug)
 
 
@@ -141,7 +140,7 @@ footer =
                     , fontWeight (int 300)
                     ]
                 ]
-                [ a [ href "https://github.com/sklirg/picturelm", target "_blank" ] [ text "Image gallery made with ❤ in Elm" ] ]
+                [ a [ href "https://github.com/sklirg/picturelm", target "_blank", rel "noopener" ] [ text "Image gallery made with ❤ in Elm" ] ]
             ]
         ]
 

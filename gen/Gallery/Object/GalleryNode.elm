@@ -49,10 +49,9 @@ thumbnail =
     Object.selectionForField "String" "thumbnail" [] Decode.string
 
 
-{-| -}
-thumbnailImage : SelectionSet decodesTo Gallery.Object.ImageNode -> SelectionSet (Maybe decodesTo) Gallery.Object.GalleryNode
+thumbnailImage : SelectionSet decodesTo Gallery.Object.ImageNode -> SelectionSet decodesTo Gallery.Object.GalleryNode
 thumbnailImage object_ =
-    Object.selectionForCompositeField "thumbnailImage" [] object_ (identity >> Decode.nullable)
+    Object.selectionForCompositeField "thumbnailImage" [] object_ identity
 
 
 {-| -}

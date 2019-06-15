@@ -42,7 +42,7 @@ apiGallery =
         |> with Gallery.Object.GalleryNode.id
         |> with Gallery.Object.GalleryNode.title
         |> with Gallery.Object.GalleryNode.slug
-        |> with Gallery.Object.GalleryNode.thumbnail
+        |> with (Gallery.Object.GalleryNode.thumbnailImage image)
         |> with (Gallery.Object.GalleryNode.description |> SelectionSet.map (Maybe.withDefault ""))
         |> with imageSet
 

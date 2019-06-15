@@ -393,15 +393,14 @@ galleryView gallery =
                 [ css [ display block ]
                 , href ("gallery/" ++ gallery.slug)
                 ]
-                [ img
+                [ imgWithSrcSetAttribute
                     [ css
                         [ backgroundColor (hex "ddd")
                         , display block
                         , width (pct 100)
                         ]
-                    , src gallery.thumbnail
                     ]
-                    []
+                    gallery.thumbnailImage
                 ]
             ]
         ]

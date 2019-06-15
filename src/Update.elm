@@ -141,7 +141,12 @@ getGalleryForWebGallerySlug slug webGalleries =
             , slug = ""
             , description = ""
             , images = []
-            , thumbnail = ""
+            , thumbnailImage =
+                { title = ""
+                , imageUrl = ""
+                , exif = baseExifData
+                , sizes = []
+                }
             , id = Id ""
             }
 
@@ -157,7 +162,12 @@ getGalleryForSlug slug galleries =
             , slug = ""
             , description = ""
             , images = []
-            , thumbnail = ""
+            , thumbnailImage =
+                { title = ""
+                , imageUrl = ""
+                , exif = baseExifData
+                , sizes = []
+                }
             , id = Id ""
             }
 

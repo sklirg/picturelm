@@ -338,7 +338,7 @@ imageView gallery image =
             [ css [ display block ]
             , href (gallery.slug ++ "/" ++ image.title)
             ]
-            [ img
+            [ imgWithSrcSetAttribute
                 [ css
                     [ display block
                     , width (pct 100)
@@ -347,9 +347,8 @@ imageView gallery image =
                     , minHeight (px 200)
                     , minWidth (px 200)
                     ]
-                , src (imageThumb image.imageUrl)
                 ]
-                []
+                image
             ]
         ]
 

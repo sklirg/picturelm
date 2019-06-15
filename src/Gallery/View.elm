@@ -91,6 +91,17 @@ addToListWithComma prev next =
     prev ++ "," ++ next
 
 
+imgWithSrcSetAttribute : List (Html.Styled.Attribute msg) -> Image -> Html.Styled.Html msg
+imgWithSrcSetAttribute attrs image =
+    img
+        (src image.imageUrl
+            :: attribute "srcset" (List.foldl addToListWithComma "" image.sizes)
+            -- , attribute "sizes" (List.foldl addToListWithComma "" (List.map (\size -> size) image.sizes))
+            :: attrs
+        )
+        []
+
+
 imageViewFunc : Html msg -> Image -> Html msg
 imageViewFunc imgHeader image =
     div
@@ -104,12 +115,10 @@ imageViewFunc imgHeader image =
         , node "div"
             []
             [ ( image.imageUrl
-              , img
-                    [ src image.imageUrl
-                    , attribute "srcset" (List.foldl addToListWithComma "" image.sizes)
-                    , css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
+              , imgWithSrcSetAttribute
+                    [ css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
                     ]
-                    []
+                    image
               )
             ]
         , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]

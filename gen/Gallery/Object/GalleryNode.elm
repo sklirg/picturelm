@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.GalleryNode exposing (ImageSetOptionalArguments, description, id, imageSet, public, slug, thumbnail, thumbnailImage, title)
+module Gallery.Object.GalleryNode exposing (ImageSetOptionalArguments, description, id, imageSet, public, slug, thumbnailImage, title)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -42,11 +42,6 @@ slug =
 description : SelectionSet (Maybe String) Gallery.Object.GalleryNode
 description =
     Object.selectionForField "(Maybe String)" "description" [] (Decode.string |> Decode.nullable)
-
-
-thumbnail : SelectionSet String Gallery.Object.GalleryNode
-thumbnail =
-    Object.selectionForField "String" "thumbnail" [] Decode.string
 
 
 thumbnailImage : SelectionSet decodesTo Gallery.Object.ImageNode -> SelectionSet decodesTo Gallery.Object.GalleryNode

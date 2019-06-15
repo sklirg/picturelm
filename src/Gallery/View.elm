@@ -21,7 +21,6 @@ import Css
         , marginTop
         , maxWidth
         , minHeight
-        , minWidth
         , none
         , padding2
         , pct
@@ -344,8 +343,7 @@ imageView gallery image =
                     , width (pct 100)
                     , height (pct 100)
                     , backgroundColor (hex "ccc")
-                    , minHeight (px 200)
-                    , minWidth (px 200)
+                    , minHeight (px 100)
                     ]
                 ]
                 image

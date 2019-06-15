@@ -10,6 +10,11 @@ steps:
       - yarn
       - yarn build
 
+  - name: lint
+    image: node:10-alpine
+    commands:
+      - yarn lint
+
   - name: publish
     image: plugins/s3
     when:

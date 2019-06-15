@@ -20,6 +20,9 @@
     "api": "elm-graphql http://localhost:8000/graphql --base Gallery --output gen",
     "build": "parcel build --public-url '/' index.html",
     "elm-analyse": "elm-analyse",
+    "elm-format": "elm-format --validate src/",
+    "elm-format:fix": "elm-format src/",
+    "lint": "yarn elm-format && yarn elm-analyse",
     "start": "parcel index.html",
     "test": "elm-test"
   }

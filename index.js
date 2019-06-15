@@ -1,4 +1,4 @@
-import { Elm } from './src/Main.elm';
+import { Elm } from "./src/Main.elm";
 
 const app = Elm.Main.init({
   node: document.getElementById("main"),
@@ -14,7 +14,7 @@ const app = Elm.Main.init({
 let scrollY = 0;
 
 // Inform app of browser navigation (the BACK and FORWARD buttons)
-window.addEventListener('popstate', function() {
+window.addEventListener("popstate", function() {
   app.ports.onUrlChange.send(location.href);
   setTimeout(() => window.scrollTo(0, scrollY), 10);
 });
@@ -22,7 +22,7 @@ window.addEventListener('popstate', function() {
 // Change the URL upon request, inform app of the change.
 app.ports.pushUrl.subscribe(function(url) {
   scrollY = window.pageYOffset;
-  history.pushState({}, '', url);
+  history.pushState({}, "", url);
   app.ports.onUrlChange.send(location.href);
 });
 

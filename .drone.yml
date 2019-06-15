@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build
-    image: node:8-alpine
+    image: node:10-alpine
     environment:
       PE_GRAPHQL_API: https://camerabag.sklirg.io/graphql
     commands:

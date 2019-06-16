@@ -13,7 +13,7 @@ steps:
   - name: lint
     image: node:10-alpine
     commands:
-      - yarn lint
+      - yarn elm-analyse
 
   - name: publish
     image: plugins/s3

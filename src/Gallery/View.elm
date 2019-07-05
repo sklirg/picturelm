@@ -151,10 +151,7 @@ galleryCarousel currentImage gallery =
         ]
 
 
-
--- imageViewFunc : Html msg -> Image -> Gallery -> Html msg
-
-
+imageViewFunc : Html AppMsg -> Image -> Gallery -> Html AppMsg
 imageViewFunc imgHeader image gallery =
     div
         [ css

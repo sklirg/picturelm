@@ -173,7 +173,7 @@ imageViewFunc imgHeader image gallery =
                     image
               )
             ]
-        , div [ css [ marginLeft (pct 20), marginRight (pct 20) ] ]
+        , div [ css [ Css.margin Css.auto, Css.maxWidth (rem 35), Css.width (pct 90) ] ]
             [ h2 [] [ text "Metadata" ]
             , exifViewFunc image.exif
             ]

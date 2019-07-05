@@ -36,8 +36,8 @@ import Css
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
-import Html.Styled exposing (Html, div, h1, h2, img, p, text)
-import Html.Styled.Attributes exposing (attribute, css, href, src, title)
+import Html.Styled exposing (Html, a, div, h1, h2, h3, img, p, text)
+import Html.Styled.Attributes exposing (attribute, css, href, src, target, title)
 import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
@@ -124,6 +124,7 @@ imageViewFunc imgHeader image =
             [ h2 [] [ text "Metadata" ]
             , exifViewFunc image.exif
             ]
+        , a [ href image.imageUrl, target "_blank" ] [ h3 [ css [ color (hex "000"), Css.textDecoration Css.underline ] ] [ text "Download" ] ]
         ]
 
 

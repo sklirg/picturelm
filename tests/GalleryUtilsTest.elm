@@ -2,7 +2,7 @@ module GalleryUtilsTest exposing (suite)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import Gallery.Utils exposing (getTriplet)
+import Gallery.Utils exposing (get5, getTriplet)
 import Test exposing (..)
 
 
@@ -97,5 +97,27 @@ suite =
                             List.range 1 100
                     in
                     Expect.equal expected (getTriplet 100 list)
+            ]
+        , describe "get5 function"
+            [ test "100 item list with target at start returns the five first items" <|
+                \_ ->
+                    let
+                        expected =
+                            [ 1, 2, 3, 4, 5 ]
+
+                        list =
+                            List.range 1 100
+                    in
+                    Expect.equal expected (get5 1 list)
+            , test "100 item list with target at end returns the five last items" <|
+                \_ ->
+                    let
+                        expected =
+                            [ 96, 97, 98, 99, 100 ]
+
+                        list =
+                            List.range 1 100
+                    in
+                    Expect.equal expected (get5 100 list)
             ]
         ]

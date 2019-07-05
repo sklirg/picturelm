@@ -35,7 +35,7 @@ import Css
         )
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (ExifData, Gallery, Image)
-import Gallery.Utils exposing (getTriplet)
+import Gallery.Utils exposing (get5, get7, get9, getTriplet)
 import Html.Styled exposing (Html, a, div, h1, h2, h3, img, p, text)
 import Html.Styled.Attributes exposing (attribute, css, href, src, target, title)
 import Html.Styled.Keyed exposing (node)
@@ -101,8 +101,61 @@ imgWithSrcSetAttribute attrs image =
         []
 
 
-imageViewFunc : Html msg -> Image -> Html msg
-imageViewFunc imgHeader image =
+galleryCarousel : Image -> Gallery -> Html AppMsg
+galleryCarousel currentImage gallery =
+    let
+        images =
+            gallery.images
+
+        carouselImages =
+            get5 currentImage images
+    in
+    div
+        [ css
+            [ Css.margin Css.auto
+            , Css.marginTop (rem 5)
+            , Css.marginBottom (rem 5)
+            , Css.width (pct 80)
+            ]
+        ]
+        [ h2 [] [ text "Gallery" ]
+        , div
+            [ css
+                [ displayFlex
+                , Css.justifyContent Css.spaceBetween
+                ]
+            ]
+            (List.map
+                (\image ->
+                    node "div"
+                        []
+                        [ ( image.title
+                          , link (ChangeRoute (Navigation.Image gallery.slug image.title))
+                                [ href image.title
+                                , css
+                                    [ Css.width (pct 19.5)
+                                    ]
+                                ]
+                                [ imgWithSrcSetAttribute
+                                    [ css
+                                        [ Css.width (pct 100)
+                                        ]
+                                    ]
+                                    image
+                                ]
+                          )
+                        ]
+                )
+                carouselImages
+            )
+        ]
+
+
+
+-- imageViewFunc : Html msg -> Image -> Gallery -> Html msg
+
+
+imageViewFunc imgHeader image gallery =
     div
         [ css
             [ property "display" "grid"
@@ -125,6 +178,7 @@ imageViewFunc imgHeader image =
             , exifViewFunc image.exif
             ]
         , a [ href image.imageUrl, target "_blank" ] [ h3 [ css [ color (hex "000"), Css.textDecoration Css.underline ] ] [ text "Download" ] ]
+        , div [] [ galleryCarousel image gallery ]
         ]
 
 
@@ -154,6 +208,7 @@ imageViewWithPrevNext gallery prevImage nextImage image =
             ]
         )
         image
+        gallery
 
 
 imageViewPrev : Gallery -> Image -> Image -> Html AppMsg
@@ -172,6 +227,7 @@ imageViewPrev gallery prevImage image =
             ]
         )
         image
+        gallery
 
 
 imageViewNext : Gallery -> Image -> Image -> Html AppMsg
@@ -190,6 +246,7 @@ imageViewNext gallery nextImage image =
             ]
         )
         image
+        gallery
 
 
 prevImageLink : Gallery -> Image -> Html AppMsg
@@ -229,9 +286,9 @@ nextImageLink gallery image =
         [ nextImageIcon ]
 
 
-ivCurrentOnly : Image -> Html msg
-ivCurrentOnly image =
-    imageViewFunc (h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]) image
+ivCurrentOnly : Image -> Gallery -> Html AppMsg
+ivCurrentOnly image gallery =
+    imageViewFunc (h1 [ css [ marginTop (rem 0), marginBottom (rem 0) ] ] [ text image.title ]) image gallery
 
 
 singleImageView : Gallery -> String -> Html AppMsg
@@ -284,7 +341,7 @@ singleImageView gallery slug =
         imageViewPrev gallery middleImage image
 
     else if nextImage == image && prevImage == image then
-        ivCurrentOnly image
+        ivCurrentOnly image gallery
 
     else
         imageViewWithPrevNext gallery prevImage nextImage image

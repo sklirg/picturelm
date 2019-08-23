@@ -172,7 +172,11 @@ imageViewFunc imgHeader image gallery =
             ]
         , div [ css [ Css.margin Css.auto, Css.maxWidth (rem 35), Css.width (pct 90) ] ]
             [ h2 [] [ text "Metadata" ]
-            , exifViewFunc image.exif
+            , if image.exif.cameraModel /= "" then
+                exifViewFunc image.exif
+
+              else
+                div [] [ text "Looks like we're missing the image metadata 😢" ]
             ]
         , a [ href image.imageUrl, target "_blank" ] [ h3 [ css [ color (hex "000"), Css.textDecoration Css.underline ] ] [ text "Download" ] ]
         , div [] [ galleryCarousel image gallery ]

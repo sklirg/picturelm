@@ -20,15 +20,12 @@ import Css
         , width
         )
 import Gallery.Components exposing (imageViewNext, imageViewPrev, imageViewWithPrevNext, imgWithSrcSetAttribute, ivCurrentOnly)
-import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, p, text)
 import Html.Styled.Attributes exposing (css, href)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import RemoteData
-import Spinner exposing (textLoadingSpinner)
 import Update exposing (getImageForSlug)
 
 

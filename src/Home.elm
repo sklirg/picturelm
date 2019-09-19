@@ -32,28 +32,43 @@ import Html.Styled.Attributes exposing (css, href, rel, target)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
-import Update exposing (getGalleryForWebGallerySlug)
+import RemoteData
+import Spinner exposing (textLoadingSpinner)
+import Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug)
 
 
 router : AppModel -> Html AppMsg
 router model =
-    case model.route of
-        Home ->
-            galleryListView model.galleries
+    case model.galleries of
+        RemoteData.Success galleries ->
+            case model.route of
+                Home ->
+                    galleryListView galleries
 
-        Gallery slug ->
-            let
-                gallery =
-                    getGalleryForWebGallerySlug slug model.galleries
-            in
-            imageListView gallery
+                Gallery slug ->
+                    let
+                        gallery =
+                            getGalleryForSlug slug galleries
+                    in
+                    imageListView gallery
 
-        Image gallerySlug imageSlug ->
-            let
-                gallery =
-                    getGalleryForWebGallerySlug gallerySlug model.galleries
-            in
-            singleImageView gallery imageSlug
+                Image gallerySlug imageSlug ->
+                    let
+                        gallery =
+                            getGalleryForWebGallerySlug gallerySlug model.galleries
+                    in
+                    singleImageView gallery imageSlug
+
+        RemoteData.NotAsked ->
+            textLoadingSpinner
+                "Initializing application"
+
+        RemoteData.Loading ->
+            textLoadingSpinner
+                "Loading galleries"
+
+        RemoteData.Failure _ ->
+            div [] [ text "Something went wrong while fetching galleries" ]
 
 
 home : AppModel -> Html AppMsg

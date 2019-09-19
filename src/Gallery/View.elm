@@ -84,7 +84,7 @@ tag key val =
             , marginRight (rem 0.25)
             ]
         ]
-        [ backgroundedLabelLeft "c3c3c3" key
+        [ backgroundedLabelLeft "747474" key
         , backgroundedLabelRight "d4d4d4" val
         ]
 

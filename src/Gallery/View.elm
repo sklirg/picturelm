@@ -25,7 +25,7 @@ import Css
         , maxWidth
         , minHeight
         , none
-        , padding2
+        , padding4
         , pct
         , property
         , px
@@ -53,10 +53,12 @@ backgroundedLabelLeft : String -> String -> Html msg
 backgroundedLabelLeft hexColor txt =
     div
         [ css
-            [ padding2 (rem 0.2) (rem 0.4)
+            [ padding4 (rem 0.2) (rem 1.25) (rem 0.2) (rem 0.4)
             , backgroundColor (hex hexColor)
             , borderBottomLeftRadius (rem 0.45)
             , borderTopLeftRadius (rem 0.45)
+            , color (hex "fefefe")
+            , property "clip-path" "polygon(0% 0%, 100% 0%, calc(100% - 1rem) 100%, 0% 100%);"
             ]
         ]
         [ text txt ]
@@ -66,10 +68,11 @@ backgroundedLabelRight : String -> String -> Html msg
 backgroundedLabelRight hexColor txt =
     div
         [ css
-            [ padding2 (rem 0.2) (rem 0.4)
+            [ padding4 (rem 0.2) (rem 0.4) (rem 0.2) (rem 2)
             , backgroundColor (hex hexColor)
             , borderBottomRightRadius (rem 0.45)
             , borderTopRightRadius (rem 0.45)
+            , marginLeft (rem -2)
             ]
         ]
         [ text txt ]

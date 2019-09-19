@@ -4,7 +4,10 @@ import Css
     exposing
         ( backgroundColor
         , block
-        , borderRadius
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderTopLeftRadius
+        , borderTopRightRadius
         , color
         , column
         , display
@@ -46,13 +49,27 @@ import Spinner exposing (textLoadingSpinner)
 import Update exposing (getImageForSlug)
 
 
-backgroundedLabel : String -> String -> Html msg
-backgroundedLabel hexColor txt =
+backgroundedLabelLeft : String -> String -> Html msg
+backgroundedLabelLeft hexColor txt =
     div
         [ css
-            [ padding2 (rem 0.1) (rem 0.4)
+            [ padding2 (rem 0.2) (rem 0.4)
             , backgroundColor (hex hexColor)
-            , borderRadius (rem 0.25)
+            , borderBottomLeftRadius (rem 0.45)
+            , borderTopLeftRadius (rem 0.45)
+            ]
+        ]
+        [ text txt ]
+
+
+backgroundedLabelRight : String -> String -> Html msg
+backgroundedLabelRight hexColor txt =
+    div
+        [ css
+            [ padding2 (rem 0.2) (rem 0.4)
+            , backgroundColor (hex hexColor)
+            , borderBottomRightRadius (rem 0.45)
+            , borderTopRightRadius (rem 0.45)
             ]
         ]
         [ text txt ]
@@ -67,8 +84,8 @@ tag key val =
             , marginRight (rem 0.25)
             ]
         ]
-        [ backgroundedLabel "c3c3c3" key
-        , backgroundedLabel "d4d4d4" val
+        [ backgroundedLabelLeft "c3c3c3" key
+        , backgroundedLabelRight "d4d4d4" val
         ]
 
 

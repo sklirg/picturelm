@@ -40,7 +40,7 @@ import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (get5, getTriplet)
 import Html.Styled exposing (Html, a, div, h1, h2, h3, img, p, text)
-import Html.Styled.Attributes exposing (attribute, css, href, src, target, title)
+import Html.Styled.Attributes exposing (alt, attribute, css, href, src, target, title)
 import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
@@ -114,6 +114,7 @@ imgWithSrcSetAttribute : List (Html.Styled.Attribute msg) -> Image -> Html.Style
 imgWithSrcSetAttribute attrs image =
     img
         (src image.imageUrl
+            :: alt image.title
             :: attribute "srcset" (List.foldl addToListWithComma "" image.sizes)
             -- , attribute "sizes" (List.foldl addToListWithComma "" (List.map (\size -> size) image.sizes))
             :: attrs

@@ -37,7 +37,7 @@ update msg model =
             ( model, pushUrl url )
 
         FetchGalleries ->
-            ( model, makeRequest model.api )
+            ( { model | galleries = RemoteData.Loading }, makeRequest model.api )
 
         ReceiveGalleries response ->
             ( { model | galleries = response }, Cmd.none )

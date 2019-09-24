@@ -11,10 +11,11 @@ type AppMsg
     | ChangeRoute Route
     | FetchGalleries
     | FetchImages Id
-    | FetchImageInfo Id
+    | FetchImageInfo String String
     | FetchNothing
     | ReceiveGalleries WebGalleries
     | OnKeyPress String
+    | RenderMap (List Float)
 
 
 send : AppMsg -> Cmd AppMsg

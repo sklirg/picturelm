@@ -1,4 +1,5 @@
 import { Elm } from "./src/Main.elm";
+import initializeMap from "./leaflet.js";
 
 const app = Elm.Main.init({
   node: document.getElementById("main"),
@@ -25,5 +26,8 @@ app.ports.pushUrl.subscribe(function(url) {
   history.pushState({}, "", url);
   app.ports.onUrlChange.send(location.href);
 });
+
+// Add map render function port
+app.ports.renderMap.subscribe(initializeMap);
 
 window.addEventListener("keydown", e => app.ports.onKeyPress.send(e.key));

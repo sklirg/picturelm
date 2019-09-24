@@ -13,12 +13,14 @@ import Css
         , flexDirection
         , flexWrap
         , fontSize
+        , height
         , hex
         , justifyContent
         , marginBottom
         , marginLeft
         , marginRight
         , marginTop
+        , maxHeight
         , maxWidth
         , padding4
         , pct
@@ -32,8 +34,9 @@ import Css
         )
 import Gallery.Model exposing (ExifData, Gallery, Image)
 import Gallery.Utils exposing (get5)
-import Html.Styled exposing (Html, a, div, h1, h2, h3, img, text)
-import Html.Styled.Attributes exposing (alt, attribute, css, href, src, target, title)
+import Html.Styled exposing (Html, a, button, div, h1, h2, h3, img, text)
+import Html.Styled.Attributes exposing (alt, attribute, css, href, id, src, target, title)
+import Html.Styled.Events exposing (onClick)
 import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..), link)
@@ -190,6 +193,20 @@ imageViewFunc imgHeader image gallery =
                 div [] [ text "Looks like we're missing the image metadata 😢" ]
             ]
         , a [ href image.imageUrl, target "_blank" ] [ h3 [ css [ color (hex "000"), Css.textDecoration Css.underline ] ] [ text "Download" ] ]
+        , if List.length image.exif.coordinates == 0 then
+            div [] []
+
+          else
+            div
+                [ id "osm-map-div"
+                , css [ height (rem 35), width (pct 70) ]
+                ]
+                [ button
+                    [ onClick (RenderMap image.exif.coordinates)
+                    , css [ marginLeft Css.auto, marginRight Css.auto, Css.display Css.block ]
+                    ]
+                    [ text "Click to load map" ]
+                ]
         , div [] [ galleryCarousel image gallery ]
         ]
 

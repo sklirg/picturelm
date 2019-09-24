@@ -5,6 +5,7 @@ import Gallery.Model exposing (Gallery, Image, baseExifData)
 import Gallery.Scalar exposing (Id(..))
 import Gallery.Utils exposing (getTriplet)
 import Graphql exposing (makeRequest)
+import Map exposing (renderMap)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..), send)
 import Navigation exposing (Route(..), locationHrefToRoute, pushUrl, routeToUrl)
@@ -48,8 +49,20 @@ update msg model =
         FetchImages _ ->
             ( model, Cmd.none )
 
-        FetchImageInfo _ ->
-            ( model, Cmd.none )
+        FetchImageInfo gallerySlug imageSlug ->
+            case model.route of
+                Navigation.Image _ _ ->
+                    let
+                        gallery =
+                            getGalleryForWebGallerySlug gallerySlug model.galleries
+
+                        image =
+                            getImageForSlug imageSlug gallery.images
+                    in
+                    ( model, send (RenderMap image.exif.coordinates) )
+
+                _ ->
+                    ( model, Cmd.none )
 
         OnKeyPress key ->
             case model.route of
@@ -97,6 +110,9 @@ update msg model =
                                 "Escape" ->
                                     send (ChangeRoute (Navigation.Gallery gallery.slug))
 
+                                "m" ->
+                                    send (RenderMap image.exif.coordinates)
+
                                 _ ->
                                     Cmd.none
                     in
@@ -104,6 +120,9 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
+
+        RenderMap coordinates ->
+            ( model, renderMap coordinates )
 
 
 loadPath : Route -> AppModel -> AppMsg
@@ -124,10 +143,10 @@ loadPath route model =
                     gallery =
                         getGalleryForWebGallerySlug gallerySlug model.galleries
 
-                    _ =
+                    image =
                         getImageForSlug imageSlug gallery.images
                 in
-                FetchImageInfo (Id gallery.slug)
+                FetchImageInfo gallery.slug image.title
 
 
 getGalleryForWebGallerySlug : String -> WebGalleries -> Gallery

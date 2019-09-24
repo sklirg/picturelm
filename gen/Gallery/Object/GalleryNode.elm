@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.GalleryNode exposing (ImageSetOptionalArguments, description, id, imageSet, public, slug, thumbnailImage, title)
+module Gallery.Object.GalleryNode exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -65,7 +65,8 @@ type alias ImageSetOptionalArguments =
     }
 
 
-imageSet : (ImageSetOptionalArguments -> ImageSetOptionalArguments) -> SelectionSet decodesTo Gallery.Object.ImageNodeConnection -> SelectionSet (Maybe decodesTo) Gallery.Object.GalleryNode
+{-| -}
+imageSet : (ImageSetOptionalArguments -> ImageSetOptionalArguments) -> SelectionSet decodesTo Gallery.Object.ImageNodeConnection -> SelectionSet decodesTo Gallery.Object.GalleryNode
 imageSet fillInOptionals object_ =
     let
         filledInOptionals =
@@ -75,4 +76,4 @@ imageSet fillInOptionals object_ =
             [ Argument.optional "before" filledInOptionals.before Encode.string, Argument.optional "after" filledInOptionals.after Encode.string, Argument.optional "first" filledInOptionals.first Encode.int, Argument.optional "last" filledInOptionals.last Encode.int, Argument.optional "title" filledInOptionals.title Encode.string, Argument.optional "datetime" filledInOptionals.datetime (Gallery.ScalarCodecs.codecs |> Gallery.Scalar.unwrapEncoder .codecDateTime) ]
                 |> List.filterMap identity
     in
-    Object.selectionForCompositeField "imageSet" optionalArgs object_ (identity >> Decode.nullable)
+    Object.selectionForCompositeField "imageSet" optionalArgs object_ identity

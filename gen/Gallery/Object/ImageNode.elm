@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.ImageNode exposing (datetime, description, exif, gallery, id, imageUrl, latitude, longitude, public, sizes, title)
+module Gallery.Object.ImageNode exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface

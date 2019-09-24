@@ -13,7 +13,7 @@ import Gallery.Query
 import Gallery.Scalar exposing (Id(..))
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with, withDefault)
 import Json.Decode exposing (decodeString, list, string)
 import RemoteData exposing (RemoteData)
 
@@ -61,11 +61,11 @@ exifDecoder =
         Gallery.Object.ExifNode.aperture
         Gallery.Object.ExifNode.cameraModel
         Gallery.Object.ExifNode.exposureProgram
-        Gallery.Object.ExifNode.focalLength
         Gallery.Object.ExifNode.fStop
         Gallery.Object.ExifNode.iso
         Gallery.Object.ExifNode.lensModel
         Gallery.Object.ExifNode.shutterSpeed
+        Gallery.Object.ExifNode.coordinates
 
 
 decodeStringWithDefault : Result Json.Decode.Error (List String) -> List String
@@ -118,4 +118,3 @@ imageEdges =
 imageSet : SelectionSet (List Image) Gallery.Object.GalleryNode
 imageSet =
     Gallery.Object.GalleryNode.imageSet (\opts -> opts) imageEdges
-        |> SelectionSet.nonNullOrFail

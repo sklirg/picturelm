@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Interface.Node exposing (Fragments, fragments, id, maybeFragments)
+module Gallery.Interface.Node exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface

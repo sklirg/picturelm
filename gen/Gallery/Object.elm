@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object exposing (ExifNode(..), GalleryNode(..), GalleryNodeConnection(..), GalleryNodeEdge(..), ImageNode(..), ImageNodeConnection(..), ImageNodeEdge(..), PageInfo(..))
+module Gallery.Object exposing (..)
 
 
 type ExifNode

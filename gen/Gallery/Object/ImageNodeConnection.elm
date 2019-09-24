@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.ImageNodeConnection exposing (edges, pageInfo)
+module Gallery.Object.ImageNodeConnection exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -19,11 +19,15 @@ import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
 
+{-| Pagination data for this connection.
+-}
 pageInfo : SelectionSet decodesTo Gallery.Object.PageInfo -> SelectionSet decodesTo Gallery.Object.ImageNodeConnection
 pageInfo object_ =
     Object.selectionForCompositeField "pageInfo" [] object_ identity
 
 
+{-| Contains the nodes in this connection.
+-}
 edges : SelectionSet decodesTo Gallery.Object.ImageNodeEdge -> SelectionSet (List (Maybe decodesTo)) Gallery.Object.ImageNodeConnection
 edges object_ =
     Object.selectionForCompositeField "edges" [] object_ (identity >> Decode.nullable >> Decode.list)

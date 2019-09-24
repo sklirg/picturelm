@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.GalleryNodeEdge exposing (cursor, node)
+module Gallery.Object.GalleryNodeEdge exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface

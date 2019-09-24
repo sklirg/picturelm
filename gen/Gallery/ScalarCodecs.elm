@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.ScalarCodecs exposing (DateTime, Id, JSONString, codecs)
+module Gallery.ScalarCodecs exposing (..)
 
 import Gallery.Scalar exposing (defaultCodecs)
 import Json.Decode as Decode exposing (Decoder)

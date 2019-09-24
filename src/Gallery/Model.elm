@@ -25,11 +25,11 @@ type alias ExifData =
     { aperture : String
     , cameraModel : String
     , exposureProgram : String
-    , focalLength : String
     , fStop : Float
     , iso : String
     , lensModel : String
     , shutterSpeed : String
+    , coordinates : List Float
     }
 
 
@@ -38,9 +38,9 @@ baseExifData =
     { aperture = ""
     , cameraModel = ""
     , exposureProgram = ""
-    , focalLength = ""
     , fStop = 0
     , iso = ""
     , lensModel = ""
     , shutterSpeed = ""
+    , coordinates = []
     }

@@ -89,7 +89,6 @@ exifViewFunc exif =
         , div [] [ tag "FStop" (String.fromFloat exif.fStop) ]
         , div [] [ tag "Shutter speed" exif.shutterSpeed ]
         , div [] [ tag "ISO" exif.iso ]
-        , div [] [ tag "Focal length" exif.focalLength ]
         , div [] [ tag "Camera" exif.cameraModel ]
         , div [] [ tag "Lens" exif.lensModel ]
         ]

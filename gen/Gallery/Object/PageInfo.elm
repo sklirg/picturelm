@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.PageInfo exposing (endCursor, hasNextPage, hasPreviousPage, startCursor)
+module Gallery.Object.PageInfo exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface

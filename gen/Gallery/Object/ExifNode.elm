@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Object.ExifNode exposing (aperture, cameraModel, exposureProgram, fStop, focalLength, iso, lensModel, shutterSpeed)
+module Gallery.Object.ExifNode exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface
@@ -57,3 +57,8 @@ iso =
 shutterSpeed : SelectionSet String Gallery.Object.ExifNode
 shutterSpeed =
     Object.selectionForField "String" "shutterSpeed" [] Decode.string
+
+
+coordinates : SelectionSet (List Float) Gallery.Object.ExifNode
+coordinates =
+    Object.selectionForField "(List Float)" "coordinates" [] (Decode.float |> Decode.list)

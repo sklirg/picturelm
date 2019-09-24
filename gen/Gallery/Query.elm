@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Gallery.Query exposing (AllGalleriesOptionalArguments, AllImagesOptionalArguments, GalleryRequiredArguments, ImageRequiredArguments, allGalleries, allImages, gallery, image)
+module Gallery.Query exposing (..)
 
 import Gallery.InputObject
 import Gallery.Interface

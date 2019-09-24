@@ -2,8 +2,7 @@ module Home exposing (view)
 
 import Css
     exposing
-        ( auto
-        , backgroundColor
+        ( backgroundColor
         , center
         , color
         , column
@@ -16,7 +15,6 @@ import Css
         , justifyContent
         , marginBottom
         , marginLeft
-        , marginRight
         , marginTop
         , minHeight
         , pct
@@ -27,7 +25,7 @@ import Css
         )
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
 import Html
-import Html.Styled exposing (Html, a, div, h1, p, text, toUnstyled)
+import Html.Styled exposing (Html, a, div, h1, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, href, rel, target)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
@@ -145,17 +143,19 @@ footer =
         [ div
             [ css
                 [ displayFlex
-                , marginTop (rem 2)
+                , Css.flexDirection Css.column
+                , Css.justifyContent Css.center
+                , Css.alignItems Css.center
+                , height (pct 100)
                 ]
             ]
-            [ p
-                [ css
-                    [ marginLeft auto
-                    , marginRight auto
-                    , fontWeight (int 300)
-                    ]
+            [ a
+                [ href "https://github.com/sklirg/picturelm"
+                , target "_blank"
+                , rel "noopener"
+                , css [ fontWeight (int 300) ]
                 ]
-                [ a [ href "https://github.com/sklirg/picturelm", target "_blank", rel "noopener" ] [ text "Image gallery made with ❤ in Elm" ] ]
+                [ text "Image gallery made with ❤ in Elm" ]
             ]
         ]
 

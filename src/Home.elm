@@ -80,7 +80,7 @@ home model =
         ]
         [ header (getAppTitle model)
         , body model
-        , footer
+        , footer model.commitSha model.commitMsg model.commitLink
         ]
 
 
@@ -131,8 +131,8 @@ body model =
         ]
 
 
-footer : Html msg
-footer =
+footer : String -> String -> String -> Html msg
+footer commitSha commitMsg commitLink =
     div
         [ css
             [ backgroundColor (hex "3c3c3c")
@@ -156,6 +156,15 @@ footer =
                 , css [ fontWeight (int 300) ]
                 ]
                 [ text "Image gallery made with ❤ in Elm" ]
+            , a
+                [ css [ fontWeight (int 300), marginTop (Css.px 2), Css.fontSize (rem 0.8) ] ]
+                [ a
+                    [ href commitLink
+                    , target "_blank"
+                    , rel "noopener"
+                    ]
+                    [ text ("Latest update - " ++ String.slice 0 7 commitSha ++ ": " ++ commitMsg) ]
+                ]
             ]
         ]
 

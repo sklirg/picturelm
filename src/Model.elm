@@ -21,6 +21,9 @@ baseModel flags =
     ( { galleries = NotAsked
       , route = initRoute
       , api = flags.api
+      , commitSha = flags.commitSha
+      , commitMsg = flags.commitMsg
+      , commitLink = flags.commitLink
       }
     , send Msg.FetchGalleries
     )
@@ -29,6 +32,9 @@ baseModel flags =
 type alias Flags =
     { location : String
     , api : String
+    , commitSha : String
+    , commitMsg : String
+    , commitLink : String
     }
 
 
@@ -36,4 +42,7 @@ type alias AppModel =
     { galleries : WebGalleries
     , route : Route
     , api : String
+    , commitSha : String
+    , commitMsg : String
+    , commitLink : String
     }

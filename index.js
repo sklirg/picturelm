@@ -5,7 +5,10 @@ const app = Elm.Main.init({
   node: document.getElementById("main"),
   flags: {
     api: process.env.PE_GRAPHQL_API || "",
-    location: location.href
+    location: location.href,
+    commitLink: process.env.DRONE_COMMIT_LINK || "",
+    commitMsg: process.env.DRONE_COMMIT_MESSAGE || "",
+    commitSha: process.env.DRONE_COMMIT_SHA || ""
   }
 });
 

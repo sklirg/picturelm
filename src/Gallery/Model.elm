@@ -22,9 +22,9 @@ type alias Image =
 
 
 type alias ExifData =
-    { aperture : String
-    , cameraModel : String
+    { cameraModel : String
     , exposureProgram : String
+    , focalLength : String
     , fStop : Float
     , iso : String
     , lensModel : String
@@ -35,10 +35,10 @@ type alias ExifData =
 
 baseExifData : ExifData
 baseExifData =
-    { aperture = ""
-    , cameraModel = ""
+    { cameraModel = ""
     , exposureProgram = ""
-    , fStop = 0
+    , focalLength = ""
+    , fStop = 0.0
     , iso = ""
     , lensModel = ""
     , shutterSpeed = ""

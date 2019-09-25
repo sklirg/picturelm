@@ -58,9 +58,9 @@ query =
 exifDecoder : SelectionSet ExifData Gallery.Object.ExifNode
 exifDecoder =
     SelectionSet.map8 ExifData
-        Gallery.Object.ExifNode.aperture
         Gallery.Object.ExifNode.cameraModel
         Gallery.Object.ExifNode.exposureProgram
+        Gallery.Object.ExifNode.focalLength
         Gallery.Object.ExifNode.fStop
         Gallery.Object.ExifNode.iso
         Gallery.Object.ExifNode.lensModel

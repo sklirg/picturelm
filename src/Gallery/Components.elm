@@ -88,8 +88,8 @@ tag key val =
 exifViewFunc : ExifData -> Html msg
 exifViewFunc exif =
     div [ css [ displayFlex, flexWrap wrap, justifyContent spaceBetween, marginRight (rem -0.25) ] ]
-        [ div [] [ tag "Aperture" exif.aperture ]
-        , div [] [ tag "FStop" (String.fromFloat exif.fStop) ]
+        [ div [] [ tag "Aperture" (String.fromFloat exif.fStop) ]
+        , div [] [ tag "Focal length" exif.focalLength ]
         , div [] [ tag "Shutter speed" exif.shutterSpeed ]
         , div [] [ tag "ISO" exif.iso ]
         , div [] [ tag "Camera" exif.cameraModel ]

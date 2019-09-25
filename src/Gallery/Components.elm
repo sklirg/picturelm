@@ -197,15 +197,20 @@ imageViewFunc imgHeader image gallery =
             div [] []
 
           else
-            div
-                [ id "osm-map-div"
-                , css [ height (rem 35), width (pct 70) ]
-                ]
-                [ button
-                    [ onClick (RenderMap image.exif.coordinates)
-                    , css [ marginLeft Css.auto, marginRight Css.auto, Css.display Css.block ]
-                    ]
-                    [ text "Click to load map" ]
+            node "div"
+                [ css [ height (rem 35), width (pct 70) ] ]
+                [ ( image.imageUrl
+                  , div
+                        [ id "osm-map-div"
+                        , css [ height (pct 100), width (pct 100) ]
+                        ]
+                        [ button
+                            [ onClick (RenderMap image.exif.coordinates)
+                            , css [ marginLeft Css.auto, marginRight Css.auto, Css.display Css.block ]
+                            ]
+                            [ text "Click to load map" ]
+                        ]
+                  )
                 ]
         , div [] [ galleryCarousel image gallery ]
         ]

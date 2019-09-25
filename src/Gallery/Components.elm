@@ -87,7 +87,7 @@ tag key val =
 
 exifViewFunc : ExifData -> Html msg
 exifViewFunc exif =
-    div [ css [ displayFlex, flexWrap wrap, justifyContent spaceBetween, marginRight (rem -0.25) ] ]
+    div [ css [ displayFlex, flexWrap wrap, Css.flexGrow (Css.int 0), Css.flexShrink (Css.int 1), justifyContent spaceBetween, Css.maxWidth (rem 35) ] ]
         [ div [] [ tag "Aperture" (String.fromFloat exif.fStop) ]
         , div [] [ tag "Focal length" exif.focalLength ]
         , div [] [ tag "Shutter speed" exif.shutterSpeed ]
@@ -184,34 +184,36 @@ imageViewFunc imgHeader image gallery =
                 -- set css height
               )
             ]
-        , div [ css [ Css.margin Css.auto, Css.maxWidth (rem 35), Css.width (pct 90) ] ]
+        , div [ css [ Css.margin Css.auto ] ]
             [ h2 [] [ text "Metadata" ]
             , if image.exif.cameraModel /= "" then
-                exifViewFunc image.exif
+                div [ css [ displayFlex ] ]
+                    [ exifViewFunc image.exif
+                    , if List.length image.exif.coordinates == 0 then
+                        div [] []
+
+                      else
+                        node "div"
+                            [ css [ height (rem 15), width (rem 35) ] ]
+                            [ ( image.imageUrl
+                              , div
+                                    [ id "osm-map-div"
+                                    , css [ height (pct 100), width (pct 100) ]
+                                    ]
+                                    [ button
+                                        [ onClick (RenderMap image.exif.coordinates)
+                                        , css [ marginLeft Css.auto, marginRight Css.auto, Css.display Css.block ]
+                                        ]
+                                        [ text "Click to load map" ]
+                                    ]
+                              )
+                            ]
+                    ]
 
               else
                 div [] [ text "Looks like we're missing the image metadata 😢" ]
             ]
         , a [ href image.imageUrl, target "_blank" ] [ h3 [ css [ color (hex "000"), Css.textDecoration Css.underline ] ] [ text "Download" ] ]
-        , if List.length image.exif.coordinates == 0 then
-            div [] []
-
-          else
-            node "div"
-                [ css [ height (rem 35), width (pct 70) ] ]
-                [ ( image.imageUrl
-                  , div
-                        [ id "osm-map-div"
-                        , css [ height (pct 100), width (pct 100) ]
-                        ]
-                        [ button
-                            [ onClick (RenderMap image.exif.coordinates)
-                            , css [ marginLeft Css.auto, marginRight Css.auto, Css.display Css.block ]
-                            ]
-                            [ text "Click to load map" ]
-                        ]
-                  )
-                ]
         , div [] [ galleryCarousel image gallery ]
         ]
 

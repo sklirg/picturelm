@@ -1,11 +1,27 @@
-function initializeMap(coordinates) {
+const timeout = 250;
+
+function initializeMap(coordinates, tries = 0) {
   if (document.getElementById("osm-map-div") === null) {
+    return false;
+  }
+
+  if (tries > 3) {
+    console.warn("Tried to initialize map 3 times, aborting");
     return false;
   }
 
   const mapboxTilesAccessToken = process.env.PE_MAPBOX_API_TOKEN || "";
 
-  const map = L.map("osm-map-div");
+  let map;
+  try {
+    map = L.map("osm-map-div");
+  } catch (err) {
+    console.warn(
+      `Failed to render map, retrying in ${timeout}ms (${err.message})`
+    );
+    setTimeout(() => initializeMap(coordinates, tries + 1 || 1), timeout);
+    return true;
+  }
 
   map.setView(coordinates, 12);
 
@@ -28,7 +44,6 @@ function initializeMap(coordinates) {
 let tries = 10;
 function tryInitMap(coordinates) {
   tries--;
-  const timeout = 250;
 
   if (tries > 0) {
     const renderSuccess = initializeMap(coordinates);

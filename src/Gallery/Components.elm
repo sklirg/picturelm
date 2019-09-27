@@ -92,6 +92,7 @@ exifViewFunc exif =
             [ displayFlex
             , flexWrap wrap
             , justifyContent spaceBetween
+            , property "align-content" "flex-start"
             , Css.maxWidth (Css.vw 100)
             , Css.width (rem 35)
             ]

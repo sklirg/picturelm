@@ -87,7 +87,15 @@ tag key val =
 
 exifViewFunc : ExifData -> Html msg
 exifViewFunc exif =
-    div [ css [ displayFlex, flexWrap wrap, Css.flexGrow (Css.int 0), Css.flexShrink (Css.int 1), justifyContent spaceBetween, Css.maxWidth (rem 35) ] ]
+    div
+        [ css
+            [ displayFlex
+            , flexWrap wrap
+            , justifyContent spaceBetween
+            , Css.maxWidth (Css.vw 100)
+            , Css.width (rem 35)
+            ]
+        ]
         [ div [] [ tag "Aperture" (String.fromFloat exif.fStop) ]
         , div [] [ tag "Focal length" exif.focalLength ]
         , div [] [ tag "Shutter speed" exif.shutterSpeed ]
@@ -187,14 +195,21 @@ imageViewFunc imgHeader image gallery =
         , div [ css [ Css.margin Css.auto ] ]
             [ h2 [] [ text "Metadata" ]
             , if image.exif.cameraModel /= "" then
-                div [ css [ displayFlex ] ]
+                div
+                    [ css
+                        [ displayFlex
+                        , Css.flexWrap Css.wrap
+                        , Css.maxWidth (pct 100)
+                        , Css.justifyContent Css.spaceBetween
+                        ]
+                    ]
                     [ exifViewFunc image.exif
                     , if List.length image.exif.coordinates == 0 then
                         div [] []
 
                       else
                         node "div"
-                            [ css [ height (rem 15), width (rem 35) ] ]
+                            [ css [ height (rem 15), Css.width (rem 35), Css.maxWidth (Css.vw 100) ] ]
                             [ ( image.imageUrl
                               , div
                                     [ id "osm-map-div"

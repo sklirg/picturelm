@@ -16,6 +16,7 @@ import Css
         , height
         , hex
         , justifyContent
+        , margin
         , marginBottom
         , marginLeft
         , marginRight
@@ -93,8 +94,8 @@ exifViewFunc exif =
             , flexWrap wrap
             , justifyContent spaceBetween
             , property "align-content" "flex-start"
-            , Css.maxWidth (Css.vw 100)
-            , Css.width (rem 35)
+            , maxWidth (Css.vw 100)
+            , width (rem 35)
             ]
         ]
         [ div [] [ tag "Aperture" (String.fromFloat exif.fStop) ]
@@ -134,17 +135,17 @@ galleryCarousel currentImage gallery =
     in
     div
         [ css
-            [ Css.margin Css.auto
-            , Css.marginTop (rem 5)
-            , Css.marginBottom (rem 5)
-            , Css.width (pct 80)
+            [ margin Css.auto
+            , marginTop (rem 5)
+            , marginBottom (rem 5)
+            , width (pct 80)
             ]
         ]
         [ h2 [] [ text "Gallery" ]
         , div
             [ css
                 [ displayFlex
-                , Css.justifyContent Css.spaceBetween
+                , justifyContent Css.spaceBetween
                 ]
             ]
             (List.map
@@ -155,12 +156,12 @@ galleryCarousel currentImage gallery =
                           , link (ChangeRoute (Navigation.Image gallery.slug image.title))
                                 [ href image.title
                                 , css
-                                    [ Css.width (pct 19.5)
+                                    [ width (pct 19.5)
                                     ]
                                 ]
                                 [ imgWithSrcSetAttribute
                                     [ css
-                                        [ Css.width (pct 100)
+                                        [ width (pct 100)
                                         ]
                                     ]
                                     image
@@ -190,18 +191,17 @@ imageViewFunc imgHeader image gallery =
                     [ css [ maxWidth (pct 100), Css.maxHeight (vh 90) ]
                     ]
                     image
-                -- set css height
               )
             ]
-        , div [ css [ Css.margin Css.auto ] ]
+        , div [ css [ margin Css.auto ] ]
             [ h2 [] [ text "Metadata" ]
             , if image.exif.cameraModel /= "" then
                 div
                     [ css
                         [ displayFlex
-                        , Css.flexWrap Css.wrap
-                        , Css.maxWidth (pct 100)
-                        , Css.justifyContent Css.spaceBetween
+                        , flexWrap Css.wrap
+                        , maxWidth (pct 100)
+                        , justifyContent Css.spaceBetween
                         ]
                     ]
                     [ exifViewFunc image.exif
@@ -210,7 +210,7 @@ imageViewFunc imgHeader image gallery =
 
                       else
                         node "div"
-                            [ css [ height (rem 15), Css.width (rem 35), Css.maxWidth (Css.vw 100) ] ]
+                            [ css [ height (rem 15), width (rem 35), maxWidth (Css.vw 100) ] ]
                             [ ( image.imageUrl
                               , div
                                     [ id "osm-map-div"

@@ -115,14 +115,62 @@ update msg model =
 
                                 _ ->
                                     Cmd.none
+
+                        newModel =
+                            case key of
+                                "p" ->
+                                    { model | autoplay = not model.autoplay }
+
+                                _ ->
+                                    model
                     in
-                    ( model, cmd )
+                    ( newModel, cmd )
 
                 _ ->
                     ( model, Cmd.none )
 
         RenderMap coordinates ->
             ( model, renderMap coordinates )
+
+        Tick _ ->
+            if model.autoplay then
+                case model.route of
+                    Navigation.Image gallerySlug imageSlug ->
+                        let
+                            gallery =
+                                getGalleryForWebGallerySlug gallerySlug model.galleries
+
+                            image =
+                                getImageForSlug imageSlug gallery.images
+
+                            triplet =
+                                getTriplet image gallery.images
+
+                            nextImage =
+                                case triplet of
+                                    [ _, _, next ] ->
+                                        next
+
+                                    [] ->
+                                        image
+
+                                    _ :: _ ->
+                                        image
+
+                            cmd =
+                                if nextImage /= image then
+                                    send (ChangeRoute (Navigation.Image gallery.slug nextImage.title))
+
+                                else
+                                    Cmd.none
+                        in
+                        ( model, cmd )
+
+                    _ ->
+                        ( { model | autoplay = False }, Cmd.none )
+
+            else
+                ( model, Cmd.none )
 
 
 loadPath : Route -> AppModel -> AppMsg

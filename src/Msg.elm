@@ -4,6 +4,7 @@ import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Scalar exposing (Id(..))
 import Navigation exposing (Route)
 import Task
+import Time
 
 
 type AppMsg
@@ -16,6 +17,7 @@ type AppMsg
     | ReceiveGalleries WebGalleries
     | OnKeyPress String
     | RenderMap (List Float)
+    | Tick Time.Posix
 
 
 send : AppMsg -> Cmd AppMsg

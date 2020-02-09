@@ -78,7 +78,15 @@ home model =
             , minHeight (vh 100)
             ]
         ]
-        [ header (getAppTitle model)
+        [ header
+            (getAppTitle model
+                ++ (if model.autoplay then
+                        " ▶️"
+
+                    else
+                        ""
+                   )
+            )
         , body model
         , footer model.commitSha model.commitMsg model.commitLink
         ]

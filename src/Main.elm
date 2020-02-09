@@ -5,6 +5,7 @@ import Home exposing (view)
 import Model exposing (AppModel, Flags, baseModel)
 import Msg exposing (AppMsg(..))
 import Navigation exposing (Route(..))
+import Time
 import Update exposing (update)
 
 
@@ -23,6 +24,7 @@ subscriptions _ =
     Sub.batch
         [ onUrlChange UrlChanged
         , onKeyPress OnKeyPress
+        , Time.every 3000 Tick
         ]
 
 

@@ -133,5 +133,3 @@ get9 target items =
 
                 _ :: _ ->
                     []
-
-

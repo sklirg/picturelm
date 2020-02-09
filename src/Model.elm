@@ -24,6 +24,7 @@ baseModel flags =
       , commitSha = flags.commitSha
       , commitMsg = flags.commitMsg
       , commitLink = flags.commitLink
+      , autoplay = False
       }
     , send Msg.FetchGalleries
     )
@@ -45,4 +46,5 @@ type alias AppModel =
     , commitSha : String
     , commitMsg : String
     , commitLink : String
+    , autoplay : Bool
     }

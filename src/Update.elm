@@ -167,7 +167,7 @@ update msg model =
                         ( model, cmd )
 
                     _ ->
-                        ( model, Cmd.none )
+                        ( { model | autoplay = False }, Cmd.none )
 
             else
                 ( model, Cmd.none )

@@ -23,9 +23,9 @@ import Gallery.Components exposing (imageViewNext, imageViewPrev, imageViewWithP
 import Gallery.Model exposing (Gallery, Image)
 import Gallery.Utils exposing (getTriplet)
 import Html.Styled exposing (Html, div, p, text)
-import Html.Styled.Attributes exposing (css, href)
+import Html.Styled.Attributes exposing (css)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..), link)
+import Navigation exposing (Route(..), link, routeToUrl)
 import Update exposing (getImageForSlug)
 
 
@@ -88,9 +88,8 @@ singleImageView gallery slug =
 imageView : Gallery -> Image -> Html AppMsg
 imageView gallery image =
     div []
-        [ link (ChangeRoute (Navigation.Image gallery.slug image.title))
+        [ link (routeToUrl (Navigation.Image gallery.slug image.title))
             [ css [ display block ]
-            , href (gallery.slug ++ "/" ++ image.title)
             ]
             [ imgWithSrcSetAttribute
                 [ css
@@ -132,18 +131,16 @@ galleryView gallery =
         [ div
             []
             [ p []
-                [ link (ChangeRoute (Navigation.Gallery gallery.slug))
+                [ link (routeToUrl (Navigation.Gallery gallery.slug))
                     [ css
                         [ color (hex "000")
                         , textDecoration none
                         ]
-                    , href gallery.slug
                     ]
                     [ text (gallery.title ++ " (" ++ String.fromInt (List.length gallery.images) ++ ")") ]
                 ]
-            , link (ChangeRoute (Navigation.Gallery gallery.slug))
+            , link (routeToUrl (Navigation.Gallery gallery.slug))
                 [ css [ display block ]
-                , href ("gallery/" ++ gallery.slug)
                 ]
                 [ imgWithSrcSetAttribute
                     [ css

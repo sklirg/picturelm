@@ -1,38 +1,36 @@
 module Model exposing (AppModel, Flags, baseModel)
 
+import Browser.Navigation as Nav
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Scalar exposing (Id(..))
 import Msg exposing (AppMsg, send)
 import Navigation exposing (Route(..), locationHrefToRoute)
 import RemoteData exposing (RemoteData(..))
+import Url
 
 
-baseModel : Flags -> ( AppModel, Cmd AppMsg )
-baseModel flags =
+baseModel : Flags -> Url.Url -> Nav.Key -> ( AppModel, Cmd AppMsg )
+baseModel flags url key =
     let
-        initRoute =
-            case locationHrefToRoute flags.location of
-                Just route ->
-                    route
-
-                Nothing ->
-                    Home
+        route =
+            locationHrefToRoute url
     in
     ( { galleries = NotAsked
-      , route = initRoute
+      , route = route
       , api = flags.api
       , commitSha = flags.commitSha
       , commitMsg = flags.commitMsg
       , commitLink = flags.commitLink
       , autoplay = False
+      , key = key
+      , url = url
       }
     , send Msg.FetchGalleries
     )
 
 
 type alias Flags =
-    { location : String
-    , api : String
+    { api : String
     , commitSha : String
     , commitMsg : String
     , commitLink : String
@@ -47,4 +45,6 @@ type alias AppModel =
     , commitMsg : String
     , commitLink : String
     , autoplay : Bool
+    , key : Nav.Key
+    , url : Url.Url
     }

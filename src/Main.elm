@@ -11,28 +11,26 @@ import Update exposing (update)
 
 main : Program Flags AppModel AppMsg
 main =
-    Browser.element
+    Browser.application
         { init = baseModel
         , view = view
         , subscriptions = subscriptions
         , update = update
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
         }
 
 
 subscriptions : AppModel -> Sub AppMsg
 subscriptions _ =
     Sub.batch
-        [ onUrlChange UrlChanged
-        , onKeyPress OnKeyPress
+        [ onKeyPress OnKeyPress
         , Time.every 3000 Tick
         ]
 
 
 
 -- Navigation
-
-
-port onUrlChange : (String -> msg) -> Sub msg
 
 
 port onKeyPress : (String -> msg) -> Sub msg

@@ -1,5 +1,7 @@
 module Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug, getImageForSlug, update)
 
+import Browser
+import Browser.Navigation as Nav
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Model exposing (Gallery, Image, baseExifData)
 import Gallery.Scalar exposing (Id(..))
@@ -8,34 +10,28 @@ import Graphql exposing (makeRequest)
 import Map exposing (renderMap)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..), send)
-import Navigation exposing (Route(..), locationHrefToRoute, pushUrl, routeToUrl)
+import Navigation exposing (Route(..), internalPath, locationHrefToRoute)
 import RemoteData
+import Url
 
 
 update : AppMsg -> AppModel -> ( AppModel, Cmd AppMsg )
 update msg model =
     case msg of
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    let
+                        route =
+                            locationHrefToRoute url
+                    in
+                    ( { model | route = route }, Nav.pushUrl model.key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
         UrlChanged url ->
-            let
-                route =
-                    case locationHrefToRoute url of
-                        Just r ->
-                            r
-
-                        Nothing ->
-                            Home
-
-                fetchRoute =
-                    loadPath route model
-            in
-            ( { model | route = route }, send fetchRoute )
-
-        ChangeRoute route ->
-            let
-                url =
-                    routeToUrl route
-            in
-            ( model, pushUrl url )
+            ( { model | url = url }, Cmd.none )
 
         FetchGalleries ->
             ( { model | galleries = RemoteData.Loading }, makeRequest model.api )
@@ -102,13 +98,13 @@ update msg model =
                         cmd =
                             case key of
                                 "ArrowRight" ->
-                                    send (ChangeRoute (Navigation.Image gallery.slug nextImage.title))
+                                    send (LinkClicked (Browser.Internal (internalPath model.url (Navigation.Image gallery.slug nextImage.title))))
 
                                 "ArrowLeft" ->
-                                    send (ChangeRoute (Navigation.Image gallery.slug prevImage.title))
+                                    send (LinkClicked (Browser.Internal (internalPath model.url (Navigation.Image gallery.slug prevImage.title))))
 
                                 "Escape" ->
-                                    send (ChangeRoute (Navigation.Gallery gallery.slug))
+                                    send (LinkClicked (Browser.Internal (internalPath model.url (Navigation.Gallery gallery.slug))))
 
                                 "m" ->
                                     send (RenderMap image.exif.coordinates)
@@ -159,7 +155,7 @@ update msg model =
 
                             cmd =
                                 if nextImage /= image then
-                                    send (ChangeRoute (Navigation.Image gallery.slug nextImage.title))
+                                    send (LinkClicked (Browser.Internal (internalPath model.url (Navigation.Image gallery.slug nextImage.title))))
 
                                 else
                                     Cmd.none
@@ -171,30 +167,6 @@ update msg model =
 
             else
                 ( model, Cmd.none )
-
-
-loadPath : Route -> AppModel -> AppMsg
-loadPath route model =
-    if model.route == route then
-        FetchNothing
-
-    else
-        case route of
-            Home ->
-                FetchNothing
-
-            Navigation.Gallery slug ->
-                FetchImages (getGalleryForWebGallerySlug slug model.galleries).id
-
-            Navigation.Image gallerySlug imageSlug ->
-                let
-                    gallery =
-                        getGalleryForWebGallerySlug gallerySlug model.galleries
-
-                    image =
-                        getImageForSlug imageSlug gallery.images
-                in
-                FetchImageInfo gallery.slug image.title
 
 
 getGalleryForWebGallerySlug : String -> WebGalleries -> Gallery

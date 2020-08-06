@@ -1,8 +1,7 @@
-port module Navigation exposing (Route(..), link, locationHrefToRoute, pushUrl, routeToUrl)
+module Navigation exposing (Route(..), internalPath, link, locationHrefToRoute, routeParser, routeToUrl)
 
 import Html.Styled exposing (Attribute, Html, a)
-import Html.Styled.Events exposing (preventDefaultOn)
-import Json.Decode as D
+import Html.Styled.Attributes
 import Url
 import Url.Parser as Url exposing ((</>), map, oneOf, parse, s, string, top)
 
@@ -13,19 +12,19 @@ type Route
     | Image String String
 
 
-link : msg -> List (Attribute msg) -> List (Html msg) -> Html msg
+link : String -> List (Attribute msg) -> List (Html msg) -> Html msg
 link href attrs children =
-    a (preventDefaultOn "click" (D.succeed ( href, True )) :: attrs) children
+    a (Html.Styled.Attributes.href href :: attrs) children
 
 
-locationHrefToRoute : String -> Maybe Route
-locationHrefToRoute locationHref =
-    case Url.fromString locationHref of
-        Just url ->
-            Url.parse myParser url
+locationHrefToRoute : Url.Url -> Route
+locationHrefToRoute url =
+    case Url.parse routeParser url of
+        Just u ->
+            u
 
-        _ ->
-            Nothing
+        Nothing ->
+            Home
 
 
 routeToUrl : Route -> String
@@ -41,8 +40,8 @@ routeToUrl route =
             "/gallery/" ++ gallerySlug ++ "/" ++ imageSlug
 
 
-myParser : Url.Parser (Route -> Route) Route
-myParser =
+routeParser : Url.Parser (Route -> Route) Route
+routeParser =
     oneOf
         [ map Gallery (s "gallery" </> string)
         , map Image (s "gallery" </> string </> string)
@@ -50,4 +49,11 @@ myParser =
         ]
 
 
-port pushUrl : String -> Cmd msg
+
+-- internalPath replaces the 'path' in the current location
+-- used for keyboard events to trigger route changes
+
+
+internalPath : Url.Url -> Route -> Url.Url
+internalPath site route =
+    { site | path = routeToUrl route }

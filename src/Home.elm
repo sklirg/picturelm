@@ -1,5 +1,6 @@
 module Home exposing (view)
 
+import Browser
 import Css
     exposing
         ( backgroundColor
@@ -24,12 +25,11 @@ import Css
         , width
         )
 import Gallery.View exposing (galleryListView, imageListView, singleImageView)
-import Html
 import Html.Styled exposing (Html, a, div, h1, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, href, rel, target)
 import Model exposing (AppModel)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..), link)
+import Navigation exposing (Route(..), link, routeToUrl)
 import RemoteData
 import Spinner exposing (textLoadingSpinner)
 import Update exposing (getGalleryForSlug, getGalleryForWebGallerySlug)
@@ -109,10 +109,9 @@ header headerText =
                 , height (pct 100)
                 ]
             ]
-            [ link (ChangeRoute Home)
+            [ link (routeToUrl Home)
                 [ css
                     [ color (hex "fff") ]
-                , href "/"
                 ]
                 [ h1
                     [ css
@@ -177,9 +176,11 @@ footer commitSha commitMsg commitLink =
         ]
 
 
-view : AppModel -> Html.Html AppMsg
+view : AppModel -> Browser.Document AppMsg
 view model =
-    toUnstyled (home model)
+    { title = ""
+    , body = [ toUnstyled (home model) ]
+    }
 
 
 

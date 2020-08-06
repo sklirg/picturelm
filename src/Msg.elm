@@ -1,15 +1,16 @@
 module Msg exposing (AppMsg(..), send)
 
+import Browser
 import Gallery.Graphql exposing (WebGalleries)
 import Gallery.Scalar exposing (Id(..))
-import Navigation exposing (Route)
 import Task
 import Time
+import Url
 
 
 type AppMsg
-    = UrlChanged String
-    | ChangeRoute Route
+    = LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
     | FetchGalleries
     | FetchImages Id
     | FetchImageInfo String String

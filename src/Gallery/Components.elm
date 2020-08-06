@@ -39,7 +39,7 @@ import Html.Styled.Attributes exposing (alt, attribute, css, href, id, src, targ
 import Html.Styled.Events exposing (onClick)
 import Html.Styled.Keyed exposing (node)
 import Msg exposing (AppMsg(..))
-import Navigation exposing (Route(..), link)
+import Navigation exposing (Route(..), link, routeToUrl)
 
 
 backgroundedLabelLeft : String -> String -> Html msg
@@ -143,9 +143,8 @@ galleryCarousel currentImage gallery =
                     node "div"
                         []
                         [ ( image.title
-                          , link (ChangeRoute (Navigation.Image gallery.slug image.title))
-                                [ href image.title
-                                , css
+                          , link (routeToUrl (Navigation.Image gallery.slug image.title))
+                                [ css
                                     [ Css.width (pct 19.5)
                                     ]
                                 ]
@@ -285,8 +284,8 @@ imageViewNext gallery nextImage image =
 
 prevImageLink : Gallery -> Image -> Html AppMsg
 prevImageLink gallery image =
-    link (ChangeRoute (Navigation.Image gallery.slug image.title))
-        [ href image.title ]
+    link (routeToUrl (Navigation.Image gallery.slug image.title))
+        []
         [ prevImageIcon ]
 
 
@@ -315,8 +314,8 @@ prevImageIcon =
 
 nextImageLink : Gallery -> Image -> Html AppMsg
 nextImageLink gallery image =
-    link (ChangeRoute (Navigation.Image gallery.slug image.title))
-        [ href image.title ]
+    link (routeToUrl (Navigation.Image gallery.slug image.title))
+        []
         [ nextImageIcon ]
 
 

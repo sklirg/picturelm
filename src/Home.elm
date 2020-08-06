@@ -97,7 +97,6 @@ header headerText =
     div
         [ css
             [ backgroundColor (hex "3c3c3c")
-            , color (hex "ccc")
             ]
         ]
         [ div
@@ -117,6 +116,7 @@ header headerText =
                     [ css
                         [ marginTop (rem 0)
                         , marginBottom (rem 0)
+                        , color (hex "ddd")
                         ]
                     ]
                     [ text headerText ]

@@ -1,7 +1,6 @@
 {
   "name": "picturelm",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Håkon Solbjørg <hlsolbjorg@gmail.com>",
   "license": "MIT",
   "dependencies": {

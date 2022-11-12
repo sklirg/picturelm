@@ -2,6 +2,7 @@ mod gallery;
 
 use gloo_net::http::Request;
 use serde::Deserialize;
+use stylist::css;
 use yew::prelude::*;
 use yew::Properties;
 use yew_router::prelude::*;
@@ -66,16 +67,22 @@ impl Component for Model {
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
-            <div>
-                <header>
-                    <h1>{"Picturwasm"}</h1>
+            <div class={css!("display: grid; grid-template-rows: 5rem auto 5rem; min-height: 100vh;")}>
+                <header class={css!("background-color: #3c3c3c; color: #ffffff;")}>
+                    <h1>
+                        <Link<Route> to={Route::Home}>
+                            {"Picturwasm"}
+                        </Link<Route>>
+                    </h1>
                 </header>
                 <main>
                     <BrowserRouter>
                         <Switch<Route> render={Switch::render(switch)} />
                     </BrowserRouter>
                 </main>
-                <footer>{"Stuff"}</footer>
+                <footer class={css!("background-color: #3c3c3c; color: #cccccc;")}>
+                    {"Stuff"}
+                </footer>
             </div>
         }
     }

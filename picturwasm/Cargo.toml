@@ -1,0 +1,16 @@
+[package]
+name = "picturwasm"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+yew = "0.19"
+yew-router = "0.16"
+stylist = { version = "0.10", features = ["default", "yew_integration"] }
+wasm_request = "0.1"
+yew-hooks = "0.1.56"
+wasm-bindgen-futures = "0.4"
+gloo-net = "*"
+serde = "*"

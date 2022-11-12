@@ -124,7 +124,9 @@ impl Component for App {
     type Message = Msg<Vec<Gallery>>;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
+        ctx.link().send_message(Msg::LoadGalleries);
+
         Self {
             galleries: FetchState::NotStarted,
         }

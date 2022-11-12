@@ -29,9 +29,7 @@ enum FetchState<T> {
     NotStarted,
     InProgress,
     Success(T),
-    #[allow(dead_code)]
-    // TODO: use error resp in gallery fetch
-    Error,
+    Error(String),
 }
 
 struct Model {
@@ -101,7 +99,6 @@ impl Component for Home {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-
         html! {
             <div>
             {for ctx.props().galleries.iter().map(|g| html! {
@@ -140,7 +137,10 @@ impl Component for App {
                 ctx.link().send_future(async {
                     match fetch_all_galleries().await {
                         Ok(galleries) => Msg::SetGalleries(FetchState::Success(galleries)),
-                        Err(err) => panic!("ae: {}", err),
+                        Err(err) => Msg::SetGalleries(FetchState::Error(format!(
+                            "Failed to fetch galleries ({})",
+                            err
+                        ))),
                     }
                 });
 
@@ -164,9 +164,9 @@ impl Component for App {
                     <button onclick={link.callback(|_| Msg::LoadGalleries)}>{ "+1" }</button>
                 </div>
             },
-            FetchState::Error => html! {
+            FetchState::Error(msg) => html! {
                 <div>
-                    <p>{"Failed to load galleries"}</p>
+                    <p>{"Failed to load galleries: "}{msg}</p>
                 </div>
             },
             FetchState::InProgress => html! {
@@ -211,7 +211,7 @@ struct APIResponseAllGalleriesNode {
     node: Gallery,
 }
 
-async fn fetch_all_galleries() -> Result<Vec<Gallery>, bool> {
+async fn fetch_all_galleries() -> Result<Vec<Gallery>, gloo_net::Error> {
     let url = "https://camerabag.sklirg.io/graphql".to_string();
     let body = r#"{"query": "
 query {
@@ -268,11 +268,9 @@ query {
         .header("Content-Type", "application/json")
         .header("Accept", "application/json")
         .send()
-        .await
-        .unwrap()
+        .await?
         .json()
-        .await
-        .unwrap();
+        .await?;
 
     let mut galleries: Vec<Gallery> = vec![];
 

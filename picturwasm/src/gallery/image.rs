@@ -21,7 +21,7 @@ pub fn image_thumbnail_view(image: &Model) -> Html {
     }
 }
 
-#[derive(Clone, Deserialize, Properties, PartialEq)]
+#[derive(Clone, Deserialize, Eq, Properties, PartialEq)]
 pub struct Model {
     pub title: String,
 }

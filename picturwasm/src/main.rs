@@ -1,7 +1,9 @@
 mod gallery;
 
+use gloo_net::http::Request;
 use serde::Deserialize;
 use yew::prelude::*;
+use yew::Properties;
 use yew_router::prelude::*;
 
 use crate::gallery::gallery::{Gallery, GalleryView};
@@ -13,31 +15,82 @@ enum Route {
     Home,
     #[at("/gallery/:gallery")]
     Gallery { gallery: String },
-    #[at("/gallery/:title/:image")]
-    Image { /*gallery: String,*/ image: String, },
+    #[at("/gallery/:gallery/:image")]
+    Image { gallery: String, image: String },
 }
 
-enum Msg {
+enum Msg<T> {
     LoadGalleries,
-    InsertGalleries(Vec<Gallery>),
+    SetGalleries(FetchState<T>),
 }
 
-enum GalleryFetchStatus {
+#[derive(PartialEq)]
+enum FetchState<T> {
     NotStarted,
     InProgress,
-    Success,
+    Success(T),
+    #[allow(dead_code)]
+    // TODO: use error resp in gallery fetch
     Error,
 }
 
-struct Model {}
-struct Home {
-    galleries: Option<Vec<Gallery>>,
-    gallery_fetch_status: GalleryFetchStatus,
+struct Model {
+    _route_listener: Option<yew_router::scope_ext::HistoryHandle>,
 }
+struct App {
+    galleries: FetchState<Vec<Gallery>>,
+}
+struct Home {}
 
 impl Component for Model {
     type Message = ();
     type Properties = ();
+
+    fn create(ctx: &Context<Self>) -> Self {
+        log::info!("foo");
+        let listener =
+            ctx.link()
+                .add_history_listener(ctx.link().callback(move |history: AnyHistory| {
+                    //let loc = ctx.link().location();
+                    //ctx.link().history().unwrap().push(Route::Home);
+                    //panic!("history{}", history.location().pathname());
+                    log::info!("history callback testin");
+                }));
+
+        Self {
+            _route_listener: listener,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
+        false
+    }
+
+    fn view(&self, _ctx: &Context<Self>) -> Html {
+        html! {
+            <div>
+                <header>
+                    <h1>{"Picturwasm"}</h1>
+                </header>
+                <main>
+                    <BrowserRouter>
+                        <Switch<Route> render={Switch::render(switch)} />
+                    </BrowserRouter>
+                </main>
+                <footer>{"Stuff"}</footer>
+            </div>
+        }
+    }
+}
+
+#[derive(PartialEq, Properties)]
+pub struct HomeProps {
+    pub galleries: Vec<Gallery>,
+}
+
+impl Component for Home {
+    type Message = ();
+    type Properties = HomeProps;
 
     fn create(_ctx: &Context<Self>) -> Self {
         Self {}
@@ -47,56 +100,51 @@ impl Component for Model {
         false
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
+
         html! {
-            <BrowserRouter>
-                <Switch<Route> render={Switch::render(switch)} />
-            </BrowserRouter>
+            <div>
+            {for ctx.props().galleries.iter().map(|g| html! {
+                    <li>
+                        <Link<Route> to={Route::Gallery {gallery: {g.title.to_owned()}}}>
+                            {g.title.to_owned()}
+                        </Link<Route>>
+                    </li>
+                })}
+            </div>
         }
     }
 }
 
-impl Component for Home {
-    type Message = Msg;
+impl Component for App {
+    type Message = Msg<Vec<Gallery>>;
     type Properties = ();
 
-    //     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
     fn create(_ctx: &Context<Self>) -> Self {
         Self {
-            galleries: None,
-            gallery_fetch_status: GalleryFetchStatus::NotStarted,
+            galleries: FetchState::NotStarted,
         }
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::InsertGalleries(galleries) => {
-                self.galleries = Some(galleries);
+            Msg::SetGalleries(galleries) => {
+                self.galleries = galleries;
 
                 // trigger re-render
                 true
             }
             Msg::LoadGalleries => {
-                //wasm_bindgen_futures::spawn_local(async move {
-                //wasm_bindgen_futures::spawn_local(async {
-                _ctx.link().send_future(async {
+                ctx.link()
+                    .send_message(Msg::SetGalleries(FetchState::InProgress));
+                ctx.link().send_future(async {
                     match fetch_all_galleries().await {
-                        //Ok(galleries) => _ctx.link().send_message(Msg::InsertGalleries(galleries)),
-                        Ok(galleries) => Msg::InsertGalleries(galleries),
-                        Err(err) => panic!("ae"),
+                        Ok(galleries) => Msg::SetGalleries(FetchState::Success(galleries)),
+                        Err(err) => panic!("ae: {}", err),
                     }
-
-                    //let link = _ctx.link();
-                    //link.callback(|_: _| Msg::InsertGalleries(data));
-
-                    //self.update(_ctx, Msg::InsertGalleries(data));
-
-                    
                 });
 
-                //self.galleries = Some(data);
-
-                // trigger re-render
+                // don't trigger a re-render
                 false
             }
         }
@@ -105,70 +153,44 @@ impl Component for Home {
     fn view(&self, ctx: &Context<Self>) -> Html {
         let link = ctx.link();
 
+        let gallery_view = match &self.galleries {
+            FetchState::Success(galleries) => html! {
+                <div>
+                    <Home galleries={galleries.to_owned()} />
+                </div>
+            },
+            FetchState::NotStarted => html! {
+                <div>
+                    <button onclick={link.callback(|_| Msg::LoadGalleries)}>{ "+1" }</button>
+                </div>
+            },
+            FetchState::Error => html! {
+                <div>
+                    <p>{"Failed to load galleries"}</p>
+                </div>
+            },
+            FetchState::InProgress => html! {
+                <div>
+                    <p>{"Loading galleries..."}</p>
+                </div>
+            },
+        };
+
         html! {
-            <div>
-                <button onclick={link.callback(|_| Msg::LoadGalleries)}>{ "+1" }</button>
-                if let Some(galleries) = &self.galleries {
-                    {for galleries.iter().map(|g| html! {
-                        <li>
-                            <Link<Route> to={Route::Gallery {gallery: {g.title.to_owned()}}}>
-                                {g.title.to_owned()}
-                            </Link<Route>>
-                        </li>
-                    })}
-                } else {
-                    <p>{"No galleries found"}</p>
-                }
-            </div>
+            gallery_view
         }
     }
 }
 
 fn switch(routes: &Route) -> Html {
     match routes {
-        Route::Home => html! { <Home /> },
+        Route::Home => html! { <App /> },
         Route::Gallery { gallery } => html! { <GalleryView title={gallery.to_owned()} /> },
         Route::Image {
-            /*gallery,*/ image,
+            gallery: _gallery,
+            image,
         } => html! { <ImageView title={image.to_owned()} /> },
     }
-}
-
-fn main() {
-    yew::start_app::<Model>();
-}
-use gloo_net::http::Request;
-use yew_hooks::prelude::*;
-#[function_component(Async)]
-fn async_test() -> Html {
-    let state = use_async(async move { fetch("galleries".to_string()).await });
-
-    let onclick = {
-        let state = state.clone();
-        Callback::from(move |_| {
-            state.run();
-        })
-    };
-
-    html! {
-        <div>
-            <button {onclick} disabled={state.loading}>{"Load it"}</button>
-            if state.loading {
-                <p>{"loading"}</p>
-            } else {
-                <div>
-                <p>{"foo bar and "}</p>
-                if let Some(data) = &state.data {
-                    {data}
-                }
-                </div>
-            }
-        </div>
-    }
-}
-
-async fn fetch(url: String) -> Result<String, ()> {
-    Ok("yes".to_owned())
 }
 
 #[derive(Deserialize)]
@@ -177,7 +199,8 @@ struct GalleryAPIResponse {
 }
 #[derive(Deserialize)]
 struct APIResponseAllGalleries {
-    allGalleries: APIResponseAllGalleriesEdges,
+    #[serde(rename = "allGalleries")]
+    all_galleries: APIResponseAllGalleriesEdges,
 }
 #[derive(Deserialize)]
 struct APIResponseAllGalleriesEdges {
@@ -189,7 +212,7 @@ struct APIResponseAllGalleriesNode {
 }
 
 async fn fetch_all_galleries() -> Result<Vec<Gallery>, bool> {
-    let url = format!("https://camerabag.sklirg.io/graphql");
+    let url = "https://camerabag.sklirg.io/graphql".to_string();
     let body = r#"{"query": "
 query {
   allGalleries {
@@ -238,7 +261,7 @@ query {
   }
 }"
     }"#
-    .replace("\n", "");
+    .replace('\n', "");
 
     let req: GalleryAPIResponse = Request::post(&url)
         .body(body)
@@ -251,11 +274,16 @@ query {
         .await
         .unwrap();
 
-    let mut galleries: Vec<Gallery> = vec!();
+    let mut galleries: Vec<Gallery> = vec![];
 
-    for gallery in &req.data.allGalleries.edges {
+    for gallery in &req.data.all_galleries.edges {
         galleries.push(gallery.node.to_owned());
     }
 
     Ok(galleries)
+}
+
+fn main() {
+    wasm_logger::init(wasm_logger::Config::new(log::Level::Trace));
+    yew::start_app::<Model>();
 }

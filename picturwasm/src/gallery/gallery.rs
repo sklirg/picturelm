@@ -5,7 +5,7 @@ use yew::{function_component, Properties};
 
 use crate::gallery::image::{Model as Image, ImageThumbnailView};
 
-#[derive(Clone, Deserialize, Properties, PartialEq)]
+#[derive(Clone, Deserialize, Eq, Properties, PartialEq)]
 pub struct Gallery {
     pub title: String,
     pub images: Option<Vec<Image>>,

@@ -146,10 +146,29 @@ impl Component for App {
                 ctx.link().send_future(async {
                     match fetch_all_galleries().await {
                         Ok(galleries) => Msg::SetGalleries(FetchState::Success(galleries)),
+                        /*
                         Err(err) => Msg::SetGalleries(FetchState::Error(format!(
                             "Failed to fetch galleries ({})",
                             err
                         ))),
+                        */
+                        Err(_) => {
+                            let temp_galleries = vec![
+                                Gallery {
+                                    title: "Foo".to_string(),
+                                    images: Some(vec![
+                                        Image{
+                                            title: "1".to_string(),
+                                        },
+                                    ]),
+                                },
+                                Gallery {
+                                    title: "Bar".to_string(),
+                                    images: Some(vec![]),
+                                },
+                            ];
+                            Msg::SetGalleries(FetchState::Success(temp_galleries))
+                        }
                     }
                 });
 

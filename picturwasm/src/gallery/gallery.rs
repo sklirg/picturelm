@@ -2,8 +2,10 @@ use serde::Deserialize;
 use stylist::css;
 use yew::prelude::*;
 use yew::{function_component, Properties};
+use yew_router::prelude::*;
 
-use crate::gallery::image::{Model as Image, ImageThumbnailView};
+use crate::gallery::image::{ImageThumbnailView, Model as Image};
+use crate::Route;
 
 #[derive(Clone, Deserialize, Eq, Properties, PartialEq)]
 pub struct Gallery {
@@ -13,15 +15,34 @@ pub struct Gallery {
 
 #[function_component(GalleryView)]
 pub fn gallery_view(gallery: &Gallery) -> Html {
+    let images = match &gallery.images {
+        Some(images) => {
+            let mut imgs = vec!();
+            for image in images {
+                imgs.push(
+                html! {
+                    <li>{image.to_owned().title}</li>
+                });
+            }
+            html!{<><p>{"imgs"}</p>{imgs}</>}
+        }
+        None => html! {"no imgs"},
+    };
     html! {
-        <div>
-            <h2>{gallery.title.to_owned()}</h2>
-        </div>
+        <>
+            <h2>
+                <Link<Route> to={Route::Home}>
+                    {gallery.title.to_owned()}
+                </Link<Route>>
+            </h2>
+            <ul>
+                {images}
+            </ul>
+        </>
     }
 }
 
-pub struct Model {
-}
+pub struct Model {}
 
 pub enum Msg {
     LoadGalleries,
